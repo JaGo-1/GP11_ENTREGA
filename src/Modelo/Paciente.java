@@ -21,6 +21,16 @@ public class Paciente {
         this.pesoBuscado = pesoBuscado;
     }
 
+    public Paciente(String nombre, int edad, float altura, float pesoActual, float pesoBuscado) {
+        this.nombre = nombre;
+        this.edad = edad;
+        this.altura = altura;
+        this.pesoActual = pesoActual;
+        this.pesoBuscado = pesoBuscado;
+    }
+    
+    
+
     public Paciente() {
     }
 
@@ -91,4 +101,11 @@ public class Paciente {
        
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "Paciente{" + "nroPaciente=" + nroPaciente + ", nombre=" + nombre + ", edad=" + edad + ", altura=" + altura + ", pesoActual=" + pesoActual + ", pesoBuscado=" + pesoBuscado + '}';
+    }
+    
 }
+
