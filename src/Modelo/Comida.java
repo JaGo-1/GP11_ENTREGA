@@ -74,17 +74,17 @@ public class Comida {
     
     //metodos (Añadí una clase Alimento para que coincida con el ejercicio, este es de tipo ENUM)
     
-    public List<Alimento> filtrarxIngred(int conComida){
+    public List<Comida> filtrarxIngred(int conComida){
         
         return null;
     }
     
-    public List<Alimento> filtrarxNombre(String nombre){
+    public List<Comida> filtrarxNombre(String nombre){
         
         return null;
     }
     
-    public List<Alimento> filtrarxCalorias(int caloriasPor100gr){
+    public List<Comida> filtrarxCalorias(int caloriasPor100gr){
         
         return null;
     }
