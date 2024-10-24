@@ -23,11 +23,11 @@ public class Main {
     
             PacienteData pacienteData = new PacienteData();
             
-            Paciente paciente = new Paciente("Compañero", 11, 180, 88, 80);
+          //  Paciente paciente = new Paciente("Compañero", 11, 180, 88, 80);
             
-            pacienteData.agregarPaciente(paciente);
+         //   pacienteData.agregarPaciente(paciente);
             
-            pacienteData.buscarPaciente(5);
+            pacienteData.buscarPaciente(1);
             
 }
 }
