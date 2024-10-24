@@ -1,5 +1,5 @@
 package Persistencia;
-
+import Modelo.Dieta;
 import Modelo.Paciente;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -117,5 +117,69 @@ public class PacienteData {
             JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar acceder a la tabla paciente " + ex.getMessage());
 
         }
+    }
+
+    public void cambiarPesoDeseado(float nuevoPeso, Paciente paciente) {
+        String sql = "UPDATE paciente SET pesoBuscado=? WHERE nroPaciente=?";
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(sql);
+
+            ps.setFloat(1, nuevoPeso);
+            ps.setInt(2, paciente.getNroPaciente());
+
+            int result = ps.executeUpdate();
+
+            if (result == 1) {
+                JOptionPane.showMessageDialog(null, "Se ha actualizado el peso deseado.");
+                paciente.setPesoBuscado(nuevoPeso);
+            } else {
+                JOptionPane.showMessageDialog(null, "El paciente no existe.");
+            }
+
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar acceder a la tabla paciente " + ex.getMessage());
+
+        }
+    }
+
+    public void actualizarPesoAct(float nuevoPesoActual, Paciente paciente) {
+                String sql = "UPDATE paciente SET pesoActual=? WHERE nroPaciente=?";
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(sql);
+
+            ps.setFloat(1, nuevoPesoActual);
+            ps.setInt(2, paciente.getNroPaciente());
+
+            int result = ps.executeUpdate();
+
+            if (result == 1) {
+                JOptionPane.showMessageDialog(null, "Se ha actualizado el peso actual.");
+                paciente.setPesoActual(nuevoPesoActual);
+            } else {
+                JOptionPane.showMessageDialog(null, "El paciente no existe.");
+            }
+
+            ps.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrió un error al intentar acceder a la tabla paciente " + ex.getMessage());
+
+        }
+
+    }
+
+ 
+    public List<Paciente> listarLosQueLlegaron(Dieta dieta) {
+        List<Paciente> pacientePeso = new ArrayList();
+        List<Paciente> listaPaciente = obtenerPacientes();
+        
+        for (Paciente paci : listaPaciente) {
+            if (paci.seAcercaAlPeso(dieta)) {
+                pacientePeso.add(paci);
+            }
+        }
+        return pacientePeso;
     }
 }
