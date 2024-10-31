@@ -94,5 +94,4 @@ public class ComidaData {
             System.out.println("Error al listar comidas: " + e.getMessage());
         }
         return comidas;
-    }
-}
+    }}

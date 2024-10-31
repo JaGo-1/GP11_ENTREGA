@@ -1,6 +1,7 @@
 package Persistencia;
 
 import Modelo.Paciente;
+import Persistencia.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -95,4 +96,49 @@ public class PacienteData {
         }
         return pacientes;
     }
+
+
+
+ public List<Paciente> listarPacientesAltas() {
+    List<Paciente> pacientes = new ArrayList<>();
+    String sql = "SELECT * FROM paciente WHERE estado = '1'"; 
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Paciente paciente = new Paciente();
+            paciente.setNroPaciente(rs.getInt("nroPaciente"));
+            paciente.setNombre(rs.getString("nombre"));
+            paciente.setEdad(rs.getInt("edad"));
+            paciente.setAltura(rs.getFloat("altura"));
+            paciente.setPesoActual(rs.getFloat("pesoActual"));
+            paciente.setPesoBuscado(rs.getFloat("pesoBuscado"));
+            pacientes.add(paciente);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al listar pacientes dados de alta: " + e.getMessage());
+    }
+    return pacientes;
 }
+
+public List<Paciente> listarPacientesBajas() {
+    List<Paciente> pacientes = new ArrayList<>();
+    String sql = "SELECT * FROM paciente WHERE estado = '0'"; 
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Paciente paciente = new Paciente();
+            paciente.setNroPaciente(rs.getInt("nroPaciente"));
+            paciente.setNombre(rs.getString("nombre"));
+            paciente.setEdad(rs.getInt("edad"));
+            paciente.setAltura(rs.getFloat("altura"));
+            paciente.setPesoActual(rs.getFloat("pesoActual"));
+            paciente.setPesoBuscado(rs.getFloat("pesoBuscado"));
+            pacientes.add(paciente);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al listar pacientes dados de baja: " + e.getMessage());
+    }
+    return pacientes;
+}
+}
+
