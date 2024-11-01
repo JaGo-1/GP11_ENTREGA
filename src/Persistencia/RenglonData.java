@@ -19,7 +19,7 @@ public class RenglonData {
     public void guardarRenglonDeMenu(RenglonDeMenu renglon) {
         String sql = "INSERT INTO renglonDeMenu (alimento_id, cantidadGrs, subtotalCalorias) VALUES (?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, renglon.getAlimento().getConComida());  
+            ps.setInt(1, renglon.getAlimento().getCodComida());  
             ps.setDouble(2, renglon.getCantidadGrs());
             ps.setInt(3, renglon.getSubtotalCalorias());
             ps.executeUpdate();
@@ -31,7 +31,7 @@ public class RenglonData {
     public void actualizarRenglonDeMenu(RenglonDeMenu renglon) {
         String sql = "UPDATE renglonDeMenu SET alimento_id = ?, cantidadGrs = ?, subtotalCalorias = ? WHERE nroRenglon = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, renglon.getAlimento().getConComida());
+            ps.setInt(1, renglon.getAlimento().getCodComida());
             ps.setDouble(2, renglon.getCantidadGrs());
             ps.setInt(3, renglon.getSubtotalCalorias());
             ps.setInt(4, renglon.getNroRenglon());
@@ -51,7 +51,7 @@ public class RenglonData {
                 renglon = new RenglonDeMenu();
                 renglon.setNroRenglon(rs.getInt("nroRenglon"));
                 Comida comida = new Comida();  
-                comida.setConComida(rs.getInt("alimento_id"));
+                comida.setCodComida(rs.getInt("alimento_id"));
                 renglon.setAlimento(comida);
                 renglon.setCantidadGrs(rs.getDouble("cantidadGrs"));
                 renglon.setSubtotalCalorias(rs.getInt("subtotalCalorias"));
@@ -81,7 +81,7 @@ public class RenglonData {
                 RenglonDeMenu renglon = new RenglonDeMenu();
                 renglon.setNroRenglon(rs.getInt("nroRenglon"));
                 Comida comida = new Comida();  
-                comida.setConComida(rs.getInt("alimento_id"));
+                comida.setCodComida(rs.getInt("alimento_id"));
                 renglon.setAlimento(comida);
                 renglon.setCantidadGrs(rs.getDouble("cantidadGrs"));
                 renglon.setSubtotalCalorias(rs.getInt("subtotalCalorias"));

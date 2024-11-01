@@ -5,15 +5,15 @@ import java.util.List;
 
 
 public class Comida {
-    int conComida;
+    int codComida;
     String nombre;
     String tipoComida;
     int caloriasPor100g;
     String detalle;
     boolean baja;
-
-    public Comida(int conComida, String nombre, String tipoComida, int caloriasPor100g, String detalle, boolean baja) {
-        this.conComida = conComida;
+    
+    
+    public Comida( String nombre, String tipoComida,  String detalle, int caloriasPor100g, boolean baja) {
         this.nombre = nombre;
         this.tipoComida = tipoComida;
         this.caloriasPor100g = caloriasPor100g;
@@ -24,12 +24,12 @@ public class Comida {
     public Comida() {
     }
 
-    public int getConComida() {
-        return conComida;
+    public int getCodComida() {
+        return codComida;
     }
 
-    public void setConComida(int conComida) {
-        this.conComida = conComida;
+    public void setCodComida(int conComida) {
+        this.codComida = conComida;
     }
 
     public String getNombre() {
@@ -92,5 +92,11 @@ public class Comida {
     public void modificarAlimento(Comida comida){
         
     }
+
+    @Override
+    public String toString() {
+        return  "codComida =" + codComida + ", nombre = " + nombre + ", tipoComida = " + tipoComida + ", caloriasPor100g = " + caloriasPor100g + ", detalle = " + detalle + ", baja = " + baja + ".\n";
+    }
+    
     
 }
