@@ -16,7 +16,7 @@ public class Dieta {
  int TotalCalorias;
  Paciente paciente; 
 
-    public Dieta(int codDieta, String nombreD, List<MenuDiario> Menus, LocalDate fechaIni, LocalDate fechaFin, float pesoFinal, boolean estado, int TotalCalorias, Paciente paciente) {
+    public Dieta(int codDieta, String nombreD, Paciente paciente, LocalDate fechaIni, double pesoInicial, float pesoFinal, LocalDate fechaFin, int TotalCalorias) {
         this.codDieta = codDieta;
         this.nombreD = nombreD;
         this.Menus = Menus;
