@@ -186,7 +186,8 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_inicio_btnActionPerformed
 
     private void dietas_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dietas_btnActionPerformed
-    
+
+        abrirInternalFrame(new VistaDieta());
     }//GEN-LAST:event_dietas_btnActionPerformed
 
     private void menus_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menus_btnActionPerformed
@@ -195,6 +196,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void pacientes_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pacientes_btnActionPerformed
         // TODO add your handling code here:
+                abrirInternalFrame(new GenerarPaciente());
     }//GEN-LAST:event_pacientes_btnActionPerformed
 
     private void reportes_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportes_btnActionPerformed

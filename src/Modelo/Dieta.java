@@ -16,7 +16,7 @@ public class Dieta {
  int TotalCalorias;
  Paciente paciente; 
 
-    public Dieta(int codDieta, String nombreD, Paciente paciente, LocalDate fechaIni, double pesoInicial, float pesoFinal, LocalDate fechaFin, int TotalCalorias) {
+    public Dieta(int codDieta, String nombreD, LocalDate fechaIni, double pesoInicial, float pesoFinal, LocalDate fechaFin, int TotalCalorias) {
         this.codDieta = codDieta;
         this.nombreD = nombreD;
         this.Menus = Menus;
@@ -27,6 +27,35 @@ public class Dieta {
         this.TotalCalorias = TotalCalorias;
         this.paciente = paciente;
     }
+
+    public Dieta(int codDieta, String nombreD, LocalDate fechaIni, LocalDate fechaFin, float pesoFinal, boolean estado, int TotalCalorias) {
+        this.codDieta = codDieta;
+        this.nombreD = nombreD;
+        this.fechaIni = fechaIni;
+        this.fechaFin = fechaFin;
+        this.pesoFinal = pesoFinal;
+        this.estado = estado;
+        this.TotalCalorias = TotalCalorias;
+        this.paciente = paciente;
+    }
+
+    public Dieta(String nombreD, boolean estado, int TotalCalorias) {
+        this.nombreD = nombreD;
+        this.estado = estado;
+        this.TotalCalorias = TotalCalorias;
+    }
+
+    public Dieta(String nombreD, LocalDate fechaIni, LocalDate fechaFin, boolean estado, int TotalCalorias) {
+        this.nombreD = nombreD;
+        this.fechaIni = fechaIni;
+        this.fechaFin = fechaFin;
+        this.estado = estado;
+        this.TotalCalorias = TotalCalorias;
+    }
+    
+    
+    
+    
 
     public Dieta() {
     }

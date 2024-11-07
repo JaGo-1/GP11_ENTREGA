@@ -200,6 +200,11 @@ public class VistaComida extends javax.swing.JInternalFrame {
         });
 
         baja_radio.setText("Baja");
+        baja_radio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                baja_radioActionPerformed(evt);
+            }
+        });
 
         ingresarComidas_text.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         ingresarComidas_text.setText("Ingresar Comidas");
@@ -287,14 +292,14 @@ public class VistaComida extends javax.swing.JInternalFrame {
                                 .addComponent(tipoComida_text)
                                 .addComponent(detalle_text)
                                 .addComponent(calorias_text)))))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
                 .addComponent(gestionComidas_text)
                 .addGap(32, 32, 32)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -446,6 +451,10 @@ public class VistaComida extends javax.swing.JInternalFrame {
             cd.borrarComida(codigo);
             }
     }//GEN-LAST:event_borrar_btnActionPerformed
+
+    private void baja_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baja_radioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_baja_radioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
