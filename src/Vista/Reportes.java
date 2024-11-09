@@ -1,24 +1,43 @@
-
 package Vista;
 
+import Modelo.Comida;
+import Modelo.Dieta;
+import Modelo.Paciente;
+import Persistencia.ComidaData;
+import Persistencia.DietaData;
+import Persistencia.PacienteData;
 import java.beans.PropertyVetoException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
-
 public class Reportes extends javax.swing.JInternalFrame {
 
+    private PacienteData dp = new PacienteData();
+    private DietaData dd = new DietaData();
+    private ComidaData cd = new ComidaData();
+    
     public Reportes() {
         initComponents();
         setSize(763, 501);
+        List<Paciente> pacientesTotales=dp.listarPacientes();
+        pacientesTotales_jLabel.setText(""+pacientesTotales.size());
         
+        List<Dieta> dietaslTotales = dd.listarDietas();
+        dietasRegistradas_jLabel.setText(""+dietaslTotales.size());
+        
+        List<Comida> comidasTotales = cd.listarComidas();
+        comidasRegistradas_jLabel.setText(""+comidasTotales.size());
+        
+        List<Paciente> pacientesDeAltaTotales=dp.listarPacientesAltas();
+        objetivosAlcanzados_jLabel.setText(""+pacientesDeAltaTotales.size());
         // Ocultar la barra de título
         BasicInternalFrameUI ui = (BasicInternalFrameUI) getUI();
-        ui.setNorthPane(null); 
-        
-         //internalFrame siempre maximizado
+        ui.setNorthPane(null);
+
+        //internalFrame siempre maximizado
         try {
             this.setMaximum(true);
         } catch (PropertyVetoException ex) {
@@ -27,27 +46,26 @@ public class Reportes extends javax.swing.JInternalFrame {
         this.setFrameIcon(new ImageIcon());
     }
 
-  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         background = new javax.swing.JPanel();
         panel1 = new Vista.componentes.Panel();
-        jLabel6 = new javax.swing.JLabel();
+        pacientesTotales_jLabel = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         panel3 = new Vista.componentes.Panel();
-        jLabel9 = new javax.swing.JLabel();
+        comidasRegistradas_jLabel = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         panel4 = new Vista.componentes.Panel();
-        jLabel12 = new javax.swing.JLabel();
+        objetivosAlcanzados_jLabel = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         panel5 = new Vista.componentes.Panel();
         jLabel17 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
+        dietasRegistradas_jLabel = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         panel6 = new Vista.componentes.Panel();
         jLabel1 = new javax.swing.JLabel();
@@ -67,9 +85,9 @@ public class Reportes extends javax.swing.JInternalFrame {
 
         panel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 29)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(243, 215, 0));
-        jLabel6.setText("10");
+        pacientesTotales_jLabel.setFont(new java.awt.Font("Segoe UI", 1, 29)); // NOI18N
+        pacientesTotales_jLabel.setForeground(new java.awt.Color(243, 215, 0));
+        pacientesTotales_jLabel.setText("10");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(51, 51, 51));
@@ -84,7 +102,7 @@ public class Reportes extends javax.swing.JInternalFrame {
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel6)
+                .addComponent(pacientesTotales_jLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
@@ -100,15 +118,15 @@ public class Reportes extends javax.swing.JInternalFrame {
                         .addComponent(jLabel7)
                         .addGap(1, 1, 1)
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pacientesTotales_jLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
         panel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 29)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(243, 191, 0));
-        jLabel9.setText("10");
+        comidasRegistradas_jLabel.setFont(new java.awt.Font("Segoe UI", 1, 29)); // NOI18N
+        comidasRegistradas_jLabel.setForeground(new java.awt.Color(243, 191, 0));
+        comidasRegistradas_jLabel.setText("10");
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(51, 51, 51));
@@ -123,7 +141,7 @@ public class Reportes extends javax.swing.JInternalFrame {
             panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel3Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(jLabel9)
+                .addComponent(comidasRegistradas_jLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
@@ -139,15 +157,15 @@ public class Reportes extends javax.swing.JInternalFrame {
                         .addComponent(jLabel10)
                         .addGap(1, 1, 1)
                         .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comidasRegistradas_jLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(17, 17, 17))
         );
 
         panel4.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 29)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(243, 167, 0));
-        jLabel12.setText("10");
+        objetivosAlcanzados_jLabel.setFont(new java.awt.Font("Segoe UI", 1, 29)); // NOI18N
+        objetivosAlcanzados_jLabel.setForeground(new java.awt.Color(243, 167, 0));
+        objetivosAlcanzados_jLabel.setText("10");
 
         jLabel14.setForeground(new java.awt.Color(51, 51, 51));
         jLabel14.setText("alcanzados");
@@ -162,7 +180,7 @@ public class Reportes extends javax.swing.JInternalFrame {
             panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel4Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(jLabel12)
+                .addComponent(objetivosAlcanzados_jLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel13)
@@ -178,7 +196,7 @@ public class Reportes extends javax.swing.JInternalFrame {
                         .addComponent(jLabel13)
                         .addGap(1, 1, 1)
                         .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(objetivosAlcanzados_jLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(16, 16, 16))
         );
 
@@ -187,9 +205,9 @@ public class Reportes extends javax.swing.JInternalFrame {
         jLabel17.setForeground(new java.awt.Color(51, 51, 51));
         jLabel17.setText("registradas");
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 29)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(243, 135, 0));
-        jLabel15.setText("10");
+        dietasRegistradas_jLabel.setFont(new java.awt.Font("Segoe UI", 1, 29)); // NOI18N
+        dietasRegistradas_jLabel.setForeground(new java.awt.Color(243, 135, 0));
+        dietasRegistradas_jLabel.setText("10");
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(51, 51, 51));
@@ -201,7 +219,7 @@ public class Reportes extends javax.swing.JInternalFrame {
             panel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel5Layout.createSequentialGroup()
                 .addContainerGap(20, Short.MAX_VALUE)
-                .addComponent(jLabel15)
+                .addComponent(dietasRegistradas_jLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel16)
@@ -217,7 +235,7 @@ public class Reportes extends javax.swing.JInternalFrame {
                         .addComponent(jLabel16)
                         .addGap(1, 1, 1)
                         .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dietasRegistradas_jLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(16, 16, 16))
         );
 
@@ -378,22 +396,22 @@ public class Reportes extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
+    private javax.swing.JLabel comidasRegistradas_jLabel;
+    private javax.swing.JLabel dietasRegistradas_jLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JLabel objetivosAlcanzados_jLabel;
+    private javax.swing.JLabel pacientesTotales_jLabel;
     private Vista.componentes.Panel panel1;
     private Vista.componentes.Panel panel10;
     private Vista.componentes.Panel panel3;

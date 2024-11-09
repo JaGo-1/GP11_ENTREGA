@@ -1,65 +1,58 @@
-
 package Modelo;
 
 import java.time.LocalDate;
 import java.util.List;
 
-
 public class Dieta {
- int codDieta;
- String nombreD;
- List <MenuDiario> Menus;
- LocalDate fechaIni;
- LocalDate fechaFin;
- float pesoFinal;
- boolean estado;
- int TotalCalorias;
- Paciente paciente; 
+    int codDieta;
+    String nombreD;
+    List<MenuDiario> Menus;
+    LocalDate fechaIni;
+    LocalDate fechaFin;
+    float pesoFinal;
+    boolean estado;
+    int totalCalorias;
+    List<Paciente> pacientes;
 
-    public Dieta(int codDieta, String nombreD, LocalDate fechaIni, double pesoInicial, float pesoFinal, LocalDate fechaFin, int TotalCalorias) {
-        this.codDieta = codDieta;
-        this.nombreD = nombreD;
-        this.Menus = Menus;
-        this.fechaIni = fechaIni;
-        this.fechaFin = fechaFin;
-        this.pesoFinal = pesoFinal;
-        this.estado = estado;
-        this.TotalCalorias = TotalCalorias;
-        this.paciente = paciente;
-    }
-
-    public Dieta(int codDieta, String nombreD, LocalDate fechaIni, LocalDate fechaFin, float pesoFinal, boolean estado, int TotalCalorias) {
+    public Dieta(int codDieta, String nombreD, LocalDate fechaIni, double pesoInicial, float pesoFinal, LocalDate fechaFin, int totalCalorias, List<Paciente> pacientes) {
         this.codDieta = codDieta;
         this.nombreD = nombreD;
         this.fechaIni = fechaIni;
         this.fechaFin = fechaFin;
         this.pesoFinal = pesoFinal;
         this.estado = estado;
-        this.TotalCalorias = TotalCalorias;
-        this.paciente = paciente;
+        this.totalCalorias = totalCalorias;
+        this.pacientes = pacientes;
     }
 
-    public Dieta(String nombreD, boolean estado, int TotalCalorias) {
+    public Dieta(int codDieta, String nombreD, LocalDate fechaIni, LocalDate fechaFin, float pesoFinal, boolean estado, int totalCalorias) {
+        this.codDieta = codDieta;
+        this.nombreD = nombreD;
+        this.fechaIni = fechaIni;
+        this.fechaFin = fechaFin;
+        this.pesoFinal = pesoFinal;
+        this.estado = estado;
+        this.totalCalorias = totalCalorias;
+    }
+
+    public Dieta(String nombreD, boolean estado, int totalCalorias) {
         this.nombreD = nombreD;
         this.estado = estado;
-        this.TotalCalorias = TotalCalorias;
+        this.totalCalorias = totalCalorias;
     }
 
-    public Dieta(String nombreD, LocalDate fechaIni, LocalDate fechaFin, boolean estado, int TotalCalorias) {
+    public Dieta(String nombreD, LocalDate fechaIni, LocalDate fechaFin, boolean estado, int totalCalorias) {
         this.nombreD = nombreD;
         this.fechaIni = fechaIni;
         this.fechaFin = fechaFin;
         this.estado = estado;
-        this.TotalCalorias = TotalCalorias;
+        this.totalCalorias = totalCalorias;
     }
-    
-    
-    
-    
 
     public Dieta() {
     }
 
+    // Getters y setters
     public int getCodDieta() {
         return codDieta;
     }
@@ -117,34 +110,36 @@ public class Dieta {
     }
 
     public int getTotalCalorias() {
-        return TotalCalorias;
+        return totalCalorias;
     }
 
-    public void setTotalCalorias(int TotalCalorias) {
-        this.TotalCalorias = TotalCalorias;
+    public void setTotalCalorias(int totalCalorias) {
+        this.totalCalorias = totalCalorias;
     }
 
-    public Paciente getPaciente() {
-        return paciente;
+    public List<Paciente> getPacientes() {
+        return pacientes;
     }
 
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
+    public void setPacientes(List<Paciente> pacientes) {
+        this.pacientes = pacientes;
     }
- 
- //Aquí empiezan los métodos del ejercicio
-    
-    public void cargarPesoyFinalizar(float pesoFinal){
-        
+
+    // Métodos adicionales
+    public void cargarPesoyFinalizar(float pesoFinal) {
+        // Implementación
     }
-    
-    public void imprimirDietacompleta(){
-        
+
+    public void imprimirDietacompleta() {
+        // Implementación
     }
-    
-    public int calcularDiferDePeso(){
-        
+
+    public int calcularDiferDePeso() {
         return 1;
     }
- 
+
+    @Override
+    public String toString() {
+        return nombreD;
+    }
 }

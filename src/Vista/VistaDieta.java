@@ -41,17 +41,17 @@ public class VistaDieta extends javax.swing.JInternalFrame {
 
     public VistaDieta() {
         initComponents();
-        
+
         this.setResizable(false);
         this.setMaximizable(false);
-        
+        cargarDatosEnComboBoxes();
         setSize(763, 501);
-        
+
         // Ocultar la barra de título
         BasicInternalFrameUI ui = (BasicInternalFrameUI) getUI();
-        ui.setNorthPane(null); 
-        
-         //internalFrame siempre maximizado
+        ui.setNorthPane(null);
+
+        //internalFrame siempre maximizado
         try {
             this.setMaximum(true);
         } catch (PropertyVetoException ex) {
@@ -77,6 +77,23 @@ public class VistaDieta extends javax.swing.JInternalFrame {
         tablaPaciente.setRowCount(0);
         for (Paciente p : pacientes) {
             tablaPaciente.addRow(new Object[]{p.getNroPaciente(), p.getNombre(), p.getPesoActual(), p.getPesoBuscado()});
+        }
+    }
+
+    private void cargarDatosEnComboBoxes() {
+        // Cargar dietas
+
+        dietas_jComboBox.removeAllItems();
+        pacientes_jComboBox.removeAllItems();
+        List<Dieta> dietas = dd.listarDietas();
+        for (Dieta dieta : dietas) {
+            dietas_jComboBox.addItem(dieta);
+        }
+
+        // Cargar pacientes
+        List<Paciente> pacientes = dp.listarPacientes();
+        for (Paciente paciente : pacientes) {
+            pacientes_jComboBox.addItem(paciente);
         }
     }
 
@@ -116,6 +133,11 @@ public class VistaDieta extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         fechaFin_jDateChooser = new com.toedter.calendar.JDateChooser();
         asignarDieta_jButton = new javax.swing.JButton();
+        actualizarPesoActual_jLabel = new javax.swing.JLabel();
+        actualizarPesoActual_jTextField = new javax.swing.JTextField();
+        dietas_jComboBox = new javax.swing.JComboBox<>();
+        pacientes_jComboBox = new javax.swing.JComboBox<>();
+        actualizar_jButton = new javax.swing.JButton();
 
         setBorder(null);
 
@@ -331,12 +353,15 @@ public class VistaDieta extends javax.swing.JInternalFrame {
         panel3.setLayout(panel3Layout);
         panel3Layout.setHorizontalGroup(
             panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel3Layout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
+            .addGroup(panel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(dietasPaciente_jRadioButton)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel3Layout.createSequentialGroup()
+                        .addComponent(dietasPaciente_jRadioButton)
+                        .addGap(238, 238, 238))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel3Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         panel3Layout.setVerticalGroup(
             panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -373,6 +398,28 @@ public class VistaDieta extends javax.swing.JInternalFrame {
             }
         });
 
+        actualizarPesoActual_jLabel.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        actualizarPesoActual_jLabel.setText("Actualizar Peso:");
+
+        actualizarPesoActual_jTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actualizarPesoActual_jTextFieldActionPerformed(evt);
+            }
+        });
+
+        dietas_jComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dietas_jComboBoxActionPerformed(evt);
+            }
+        });
+
+        actualizar_jButton.setText("Actualizar");
+        actualizar_jButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actualizar_jButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel4Layout = new javax.swing.GroupLayout(panel4);
         panel4.setLayout(panel4Layout);
         panel4Layout.setHorizontalGroup(
@@ -382,23 +429,37 @@ public class VistaDieta extends javax.swing.JInternalFrame {
                     .addGroup(panel4Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(55, 55, 55)
-                        .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(pesoFinal_Text)
-                            .addComponent(fechaInicio_jDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                            .addComponent(fechaFin_jDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel4Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
+                            .addGroup(panel4Layout.createSequentialGroup()
+                                .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dietas_jComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(pesoFinal_Text)
+                                    .addComponent(fechaInicio_jDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                                    .addComponent(fechaFin_jDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(pacientes_jComboBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(panel4Layout.createSequentialGroup()
+                                .addComponent(actualizarPesoActual_jLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(actualizarPesoActual_jTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE))))
+                    .addGroup(panel4Layout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(actualizar_jButton)
+                        .addGap(18, 18, 18)
                         .addComponent(asignarDieta_jButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(31, 31, 31))
         );
         panel4Layout.setVerticalGroup(
             panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel4Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pacientes_jComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dietas_jComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pesoFinal_Text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -410,9 +471,15 @@ public class VistaDieta extends javax.swing.JInternalFrame {
                 .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fechaFin_jDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(asignarDieta_jButton)
-                .addGap(31, 31, 31))
+                .addGap(2, 2, 2)
+                .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(actualizarPesoActual_jLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(actualizarPesoActual_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(asignarDieta_jButton)
+                    .addComponent(actualizar_jButton))
+                .addGap(14, 14, 14))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -476,98 +543,125 @@ public class VistaDieta extends javax.swing.JInternalFrame {
 
     private void asignarDieta_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asignarDieta_jButtonActionPerformed
         // TODO add your handling code here:    // Obtener la fila seleccionada en la tabla de dietas
-        int filaDieta = dieta_jTable1.getSelectedRow();
+        Dieta dietaSeleccionada = (Dieta) dietas_jComboBox.getSelectedItem();
+        Paciente pacienteSeleccionado = (Paciente) pacientes_jComboBox.getSelectedItem();
 
-        if (filaDieta != -1) {
-            int codigoDieta = Integer.parseInt(dieta_jTable1.getValueAt(filaDieta, 0).toString());
-            String nombreDieta = dieta_jTable1.getValueAt(filaDieta, 1).toString();
+        if (dietaSeleccionada == null || pacienteSeleccionado == null) {
+            JOptionPane.showMessageDialog(this, "Seleccione una dieta y un paciente.");
+            return;
+        }
 
-            int filaPaciente = paciente_jTable1.getSelectedRow();
+// Acceder directamente a las propiedades de cada objeto
+        int codigoDieta = dietaSeleccionada.getCodDieta();
+        String nombreDieta = dietaSeleccionada.getNombreD();
+        int codigoPaciente = pacienteSeleccionado.getNroPaciente();
+        float pesoInicial = pacienteSeleccionado.getPesoActual();
 
-            if (filaPaciente != -1) {
-                int codigoPaciente = Integer.parseInt(paciente_jTable1.getValueAt(filaPaciente, 0).toString());
+        try {
+            // Validar peso final
+            String pesoFinalText = pesoFinal_Text.getText();
+            if (pesoFinalText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese un valor para el peso final.");
+                return;
+            }
 
-                float pesoInicial = dd.obtenerPesoInicialDePaciente(codigoPaciente);
+            float pesoFinal = Float.parseFloat(pesoFinalText);
+            if (pesoFinal <= 0) {
+                JOptionPane.showMessageDialog(this, "El peso final debe ser un número positivo.");
+                return;
+            }
 
-                String pesoFinalText = pesoFinal_Text.getText();
-                if (pesoFinalText.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Ingrese un valor para el peso final.");
-                    return;
-                }
+            // Verificar si el paciente ya tiene una dieta
+            if (dd.pacienteTieneDieta(codigoPaciente)) {
+                int respuesta = JOptionPane.showConfirmDialog(
+                        this,
+                        "Este paciente ya tiene una dieta asignada. ¿Desea cambiarla?",
+                        "Confirmación de cambio de dieta",
+                        JOptionPane.YES_NO_OPTION
+                );
 
-                try {
-                    float pesoFinal = Float.parseFloat(pesoFinalText);
-                    if (pesoFinal <= 0) {
-                        JOptionPane.showMessageDialog(this, "El peso final debe ser un número positivo.");
+                if (respuesta == JOptionPane.YES_OPTION) {
+                    dd.eliminarDietaAnterior(codigoPaciente);
+
+                    java.util.Date dateInicial = fechaInicio_jDateChooser.getDate();
+                    java.util.Date dateFinal = fechaFin_jDateChooser.getDate();
+
+                    if (dateInicial == null || dateFinal == null) {
+                        JOptionPane.showMessageDialog(this, "Seleccione ambas fechas (inicial y final) para continuar.");
                         return;
                     }
 
-                    if (dd.pacienteTieneDieta(codigoPaciente)) {
-                        int respuesta = JOptionPane.showConfirmDialog(
-                            this,
-                            "Este paciente ya tiene una dieta asignada. ¿Desea cambiarla?",
-                            "Confirmación de cambio de dieta",
-                            JOptionPane.YES_NO_OPTION
-                        );
+                    LocalDate fechaInicial = dateInicial.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    LocalDate fechaFinal = dateFinal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-                        if (respuesta == JOptionPane.YES_OPTION) {
-                            dd.eliminarDietaAnterior(codigoPaciente);
-
-                            java.util.Date dateInicial = fechaInicio_jDateChooser.getDate();
-                            java.util.Date dateFinal = fechaFin_jDateChooser.getDate();
-
-                            if (dateInicial == null || dateFinal == null) {
-                                JOptionPane.showMessageDialog(this, "Seleccione ambas fechas (inicial y final) para continuar.");
-                                return;
-                            }
-
-                            LocalDate fechaInicial = dateInicial.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                            LocalDate fechaFinal = dateFinal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-                            dd.asignarDietaAPaciente(codigoDieta, nombreDieta, fechaInicial, fechaFinal, codigoPaciente, pesoInicial, pesoFinal);
-                            JOptionPane.showMessageDialog(this, "La dieta del paciente ha sido actualizada.");
-                        } else {
-                            JOptionPane.showMessageDialog(this, "La dieta del paciente no ha sido modificada.");
-                        }
-                    } else {
-                        java.util.Date dateInicial = fechaInicio_jDateChooser.getDate();
-                        java.util.Date dateFinal = fechaFin_jDateChooser.getDate();
-
-                        if (dateInicial == null || dateFinal == null) {
-                            JOptionPane.showMessageDialog(this, "Seleccione ambas fechas (inicial y final) para continuar.");
-                            return;
-                        }
-
-                        LocalDate fechaInicial = dateInicial.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                        LocalDate fechaFinal = dateFinal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-                        dd.asignarDietaAPaciente(codigoDieta, nombreDieta, fechaInicial, fechaFinal, codigoPaciente, pesoInicial, pesoFinal);
-                        JOptionPane.showMessageDialog(this, "Dieta asignada correctamente.");
-                    }
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(this, "El peso final debe ser un número válido.");
+                    dd.asignarDietaAPaciente(codigoDieta, nombreDieta, fechaInicial, fechaFinal, codigoPaciente, pesoInicial, pesoFinal);
+                    JOptionPane.showMessageDialog(this, "La dieta del paciente ha sido actualizada.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "La dieta del paciente no ha sido modificada.");
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Seleccione un paciente para continuar.");
+                java.util.Date dateInicial = fechaInicio_jDateChooser.getDate();
+                java.util.Date dateFinal = fechaFin_jDateChooser.getDate();
+
+                if (dateInicial == null || dateFinal == null) {
+                    JOptionPane.showMessageDialog(this, "Seleccione ambas fechas (inicial y final) para continuar.");
+                    return;
+                }
+
+                LocalDate fechaInicial = dateInicial.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate fechaFinal = dateFinal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+                dd.asignarDietaAPaciente(codigoDieta, nombreDieta, fechaInicial, fechaFinal, codigoPaciente, pesoInicial, pesoFinal);
+                JOptionPane.showMessageDialog(this, "Dieta asignada correctamente.");
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Seleccione una dieta para continuar.");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El peso final debe ser un número válido.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Se produjo un error: " + e.getMessage());
         }
     }//GEN-LAST:event_asignarDieta_jButtonActionPerformed
 
+
     private void dietasPaciente_jRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dietasPaciente_jRadioButtonActionPerformed
         // TODO add your handling code here:
-        tablaPaciente.setRowCount(0);
+        List<Object[]> listaPacientesYDietas = dp.obtenerPacientesYDietas(); // Obtén los datos
 
+        // Limpiar la tabla antes de agregar los nuevos datos
+        tablaPaciente.setRowCount(0);
         tablaPaciente.setColumnCount(0);
-        tablaPaciente.addColumn("Código Paciente");
-        tablaPaciente.addColumn("Nombre");
+
+        // Agregar las columnas (ajustadas a los campos que necesitas mostrar)
+        tablaPaciente.addColumn("Nombre Paciente");
         tablaPaciente.addColumn("Peso Actual");
         tablaPaciente.addColumn("Peso Buscado");
+        tablaPaciente.addColumn("Estado Paciente");
+        tablaPaciente.addColumn("Dieta");
+        tablaPaciente.addColumn("Peso Final");
 
-        llenarTablaPacientes(dp.listarPacientes());
+        // Llenar la tabla con los datos obtenidos
+        for (Object[] registro : listaPacientesYDietas) {
+            // Acceder directamente a los elementos del arreglo
+            String nombrePaciente = (String) registro[0];  // Nombre del paciente
+            float pesoActual = (float) registro[1];         // Peso actual
+            float pesoBuscado = (float) registro[2];        // Peso buscado
+            String estadoPaciente = (String) registro[3];   // Estado del paciente
+            String nombreDieta = (String) registro[4];      // Nombre de la dieta
+            float pesoFinal = (float) registro[5];          // Peso final de la dieta
 
+            // Agregar una nueva fila con los datos del paciente y la dieta
+            tablaPaciente.addRow(new Object[]{
+                nombrePaciente, // Nombre del paciente
+                pesoActual, // Peso actual del paciente
+                pesoBuscado, // Peso buscado
+                estadoPaciente, // Estado del paciente
+                nombreDieta, // Nombre de la dieta
+                pesoFinal // Peso final de la dieta
+            });
+        }
+
+        // Establecer el modelo de la tabla con los datos cargados
         paciente_jTable1.setModel(tablaPaciente);
+
     }//GEN-LAST:event_dietasPaciente_jRadioButtonActionPerformed
 
     private void dietasTotales_jRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dietasTotales_jRadioButtonActionPerformed
@@ -587,14 +681,14 @@ public class VistaDieta extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         //        int fila = dieta_jTable1.getSelectedRow();
         //        if (fila != -1) {
-            //            int codigo = (Integer) dieta_jTable1.getValueAt(fila, 0);
-            //            String nombre = (String) dieta_jTable1.getValueAt(fila, 1);
-            //            int calorias = (Integer) dieta_jTable1.getValueAt(fila, 2);
-            //
-            //            codigo_Text.setText(codigo + "");
-            //            nombre_Text.setText(nombre);
-            //            calorias_Text.setText(calorias + "");
-            //             }
+        //            int codigo = (Integer) dieta_jTable1.getValueAt(fila, 0);
+        //            String nombre = (String) dieta_jTable1.getValueAt(fila, 1);
+        //            int calorias = (Integer) dieta_jTable1.getValueAt(fila, 2);
+        //
+        //            codigo_Text.setText(codigo + "");
+        //            nombre_Text.setText(nombre);
+        //            calorias_Text.setText(calorias + "");
+        //             }
     }//GEN-LAST:event_dieta_jTable1MouseClicked
 
     private void buscar_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscar_jButtonActionPerformed
@@ -628,28 +722,28 @@ public class VistaDieta extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
         //        try {
-            //            int codigo = Integer.parseInt(codigo_Text.getText());
-            //            String nombre = nombre_Text.getText();
-            //            float pesoFinal = Float.parseFloat(pesoFinal_Text.getText());
-            //            java.util.Date dateInicial = fechaInicio_jDateChooser.getDate();
-            //            LocalDate fechaInicial = dateInicial.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            //            java.util.Date dateFinal = fechaFin_jDateChooser.getDate();
-            //            LocalDate fechaFinal = dateFinal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            //            int calorias = Integer.parseInt(calorias_Text.getText());
-            //            Boolean estado = estado_jRadioButton.isSelected();
-            //
-            //            if (dietaActual == null) {
-                //                dietaActual = new Dieta(codigo, nombre, fechaInicial, fechaFinal, pesoFinal, estado, calorias);
-                //
-                //                dd.guardarDieta(dietaActual);
-                //
-                //                JOptionPane.showMessageDialog(null, "Dieta guardada exitosamente.");
-                //            } else {
-                //                JOptionPane.showMessageDialog(null, "Ya existe una dieta actual. Por favor, elimínala o modifícala.");
-                //            }
-            //
-            //        } catch (Exception e) {
-            //        }
+        //            int codigo = Integer.parseInt(codigo_Text.getText());
+        //            String nombre = nombre_Text.getText();
+        //            float pesoFinal = Float.parseFloat(pesoFinal_Text.getText());
+        //            java.util.Date dateInicial = fechaInicio_jDateChooser.getDate();
+        //            LocalDate fechaInicial = dateInicial.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        //            java.util.Date dateFinal = fechaFin_jDateChooser.getDate();
+        //            LocalDate fechaFinal = dateFinal.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        //            int calorias = Integer.parseInt(calorias_Text.getText());
+        //            Boolean estado = estado_jRadioButton.isSelected();
+        //
+        //            if (dietaActual == null) {
+        //                dietaActual = new Dieta(codigo, nombre, fechaInicial, fechaFinal, pesoFinal, estado, calorias);
+        //
+        //                dd.guardarDieta(dietaActual);
+        //
+        //                JOptionPane.showMessageDialog(null, "Dieta guardada exitosamente.");
+        //            } else {
+        //                JOptionPane.showMessageDialog(null, "Ya existe una dieta actual. Por favor, elimínala o modifícala.");
+        //            }
+        //
+        //        } catch (Exception e) {
+        //        }
         try {
             String nombre = nombre_Text.getText();
             String caloriasText = calorias_Text.getText();
@@ -701,18 +795,84 @@ public class VistaDieta extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_codigo_TextActionPerformed
 
+    private void actualizarPesoActual_jTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarPesoActual_jTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_actualizarPesoActual_jTextFieldActionPerformed
+
+    private void dietas_jComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dietas_jComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dietas_jComboBoxActionPerformed
+
+    private void actualizar_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizar_jButtonActionPerformed
+        // TODO add your handling code here:
+        Paciente pacienteSeleccionado = (Paciente) pacientes_jComboBox.getSelectedItem();
+
+        if (pacienteSeleccionado != null) {
+            int codigoPaciente = pacienteSeleccionado.getNroPaciente();
+
+            // Obtener el nuevo peso ingresado por el usuario
+            String actualizarPesoActual = actualizarPesoActual_jTextField.getText();
+
+            if (actualizarPesoActual.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor, ingrese un peso actual.");
+                return;
+            }
+
+            try {
+                float nuevoPesoActual = Float.parseFloat(actualizarPesoActual);
+
+                if (nuevoPesoActual <= 0) {
+                    JOptionPane.showMessageDialog(this, "El peso debe ser un valor positivo.");
+                    return;
+                }
+
+                // Obtener el peso final de la dieta asignada al paciente
+                Float pesoFinal = dd.obtenerPesoFinalDeDietaPorPaciente(codigoPaciente);
+
+                if (pesoFinal == null) {
+                    JOptionPane.showMessageDialog(this, "El paciente no tiene dieta asignada.");
+                    return;
+                }
+
+                // Actualizar el peso actual del paciente en la base de datos
+                dp.actualizarPesoActual(codigoPaciente, nuevoPesoActual);
+
+                // Evaluar si el paciente cumple el objetivo de peso
+                if (nuevoPesoActual <= pesoFinal) {
+                    // Si el peso actual es igual o menor que el peso final, dar de alta al paciente
+                    dp.actualizarEstadoPaciente(codigoPaciente, 0); // Cambiar el estado del paciente a Alta
+                    JOptionPane.showMessageDialog(this, "El paciente ha alcanzado su peso objetivo y ha sido dado de alta.");
+                } else {
+                    // Si no ha alcanzado el peso objetivo, dejar al paciente en estado 
+                    dp.actualizarEstadoPaciente(codigoPaciente, 1); // Cambiar el estado del paciente a Activo
+                    JOptionPane.showMessageDialog(this, "El paciente no ha alcanzado el peso objetivo y continuará con la dieta.");
+                }
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "El peso ingresado no es válido. Por favor ingrese un número.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Se produjo un error: " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un paciente.");
+        }
+    }//GEN-LAST:event_actualizar_jButtonActionPerformed
+
     private void resetCampos() {
         nombre_Text.setText("");
         calorias_Text.setText("");
         pesoFinal_Text.setText("");
-        fechaInicio_jDateChooser.setDate(new Date());
-        fechaFin_jDateChooser.setDate(new Date());
+//        fechaInicio_jDateChooser.setDate(new Date());
+//        fechaFin_jDateChooser.setDate(new Date());
         calorias_Text.setText("");
         estado_jRadioButton.setSelected(false);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CodigoDieta_Label;
+    private javax.swing.JLabel actualizarPesoActual_jLabel;
+    private javax.swing.JTextField actualizarPesoActual_jTextField;
+    private javax.swing.JButton actualizar_jButton;
     private javax.swing.JButton asignarDieta_jButton;
     private javax.swing.JButton borrar_jButton;
     private javax.swing.JButton buscar_jButton;
@@ -721,6 +881,7 @@ public class VistaDieta extends javax.swing.JInternalFrame {
     private javax.swing.JTable dieta_jTable1;
     private javax.swing.JRadioButton dietasPaciente_jRadioButton;
     private javax.swing.JRadioButton dietasTotales_jRadioButton;
+    private javax.swing.JComboBox<Dieta> dietas_jComboBox;
     private javax.swing.JRadioButton estado_jRadioButton;
     private com.toedter.calendar.JDateChooser fechaFin_jDateChooser;
     private com.toedter.calendar.JDateChooser fechaInicio_jDateChooser;
@@ -739,6 +900,7 @@ public class VistaDieta extends javax.swing.JInternalFrame {
     private javax.swing.JTextField nombre_Text;
     private javax.swing.JButton nuevo_jButton;
     private javax.swing.JTable paciente_jTable1;
+    private javax.swing.JComboBox<Paciente> pacientes_jComboBox;
     private Vista.componentes.Panel panel1;
     private Vista.componentes.Panel panel2;
     private Vista.componentes.Panel panel3;
