@@ -6,11 +6,16 @@ import Modelo.Paciente;
 import Persistencia.ComidaData;
 import Persistencia.DietaData;
 import Persistencia.PacienteData;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.Timer;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 public class Reportes extends javax.swing.JInternalFrame {
@@ -18,21 +23,65 @@ public class Reportes extends javax.swing.JInternalFrame {
     private PacienteData dp = new PacienteData();
     private DietaData dd = new DietaData();
     private ComidaData cd = new ComidaData();
-    
+    private Dieta dieta;
+
     public Reportes() {
         initComponents();
         setSize(763, 501);
-        List<Paciente> pacientesTotales=dp.listarPacientes();
-        pacientesTotales_jLabel.setText(""+pacientesTotales.size());
-        
+
+        List<Paciente> pacientesTotales = dp.listarPacientes();
+        pacientesTotales_jLabel.setText("" + pacientesTotales.size());
+
         List<Dieta> dietaslTotales = dd.listarDietas();
-        dietasRegistradas_jLabel.setText(""+dietaslTotales.size());
-        
+        dietasRegistradas_jLabel.setText("" + dietaslTotales.size());
+
         List<Comida> comidasTotales = cd.listarComidas();
-        comidasRegistradas_jLabel.setText(""+comidasTotales.size());
-        
-        List<Paciente> pacientesDeAltaTotales=dp.listarPacientesAltas();
-        objetivosAlcanzados_jLabel.setText(""+pacientesDeAltaTotales.size());
+        comidasRegistradas_jLabel.setText("" + comidasTotales.size());
+
+        List<Paciente> pacientesDeAltaTotales = dp.listarPacientesAltas();
+        objetivosAlcanzados_jLabel.setText("" + pacientesDeAltaTotales.size());
+
+        Timer timer = new Timer(2000, new ActionListener() {  // Cambia cada 2 segundos
+            int index = 0;  // Índice para recorrer la lista de pacientes
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (pacientesTotales.size() > 0) {
+                    Paciente p = pacientesTotales.get(index);
+
+                    // Recargar dieta desde la base de datos
+                    Dieta dieta = dd.cargarDietaDesdeBaseDatos(p.getNroPaciente()); // Método para recargar la dieta desde la base de datos
+
+                    if (dieta != null) {
+                        long totalDias = dieta.getTotalDias();
+                        long diasTranscurridos = dieta.getDiasTranscurridos();
+                        double porcentajeProgreso = dieta.getPorcentajeProgreso();
+
+                        // Actualizar la barra de progreso
+                        peso_jProgressBar.setMinimum(0);
+                        peso_jProgressBar.setMaximum((int) totalDias);
+                        peso_jProgressBar.setValue((int) diasTranscurridos);
+                        peso_jProgressBar.setString(String.format("%.2f%%", porcentajeProgreso));
+
+                        peso_jProgressBar.repaint();
+                        peso_jProgressBar.updateUI();
+                    } else {
+                        peso_jProgressBar.setValue(0);
+                        peso_jProgressBar.setString("No tiene dieta asignada");
+                    }
+
+                    nombrePaciente_jLabel.setText(p.getNombre());
+
+                    index++;
+                    if (index >= pacientesTotales.size()) {
+                        index = 0;
+                    }
+                }
+            }
+
+        });
+        timer.start();
+
         // Ocultar la barra de título
         BasicInternalFrameUI ui = (BasicInternalFrameUI) getUI();
         ui.setNorthPane(null);
@@ -68,8 +117,8 @@ public class Reportes extends javax.swing.JInternalFrame {
         dietasRegistradas_jLabel = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         panel6 = new Vista.componentes.Panel();
-        jLabel1 = new javax.swing.JLabel();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        nombrePaciente_jLabel = new javax.swing.JLabel();
+        peso_jProgressBar = new javax.swing.JProgressBar();
         jLabel5 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         panel7 = new Vista.componentes.Panel();
@@ -241,14 +290,14 @@ public class Reportes extends javax.swing.JInternalFrame {
 
         panel6.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("Nombre paciente");
+        nombrePaciente_jLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        nombrePaciente_jLabel.setForeground(new java.awt.Color(51, 51, 51));
+        nombrePaciente_jLabel.setText("Nombre paciente");
 
-        jProgressBar1.setForeground(new java.awt.Color(58, 204, 104));
-        jProgressBar1.setValue(75);
+        peso_jProgressBar.setForeground(new java.awt.Color(58, 204, 104));
+        peso_jProgressBar.setValue(100);
 
-        jLabel5.setText("{dia-dieta}");
+        jLabel5.setText("{inicio-fin}");
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/img/pacientes (1).png"))); // NOI18N
 
@@ -263,8 +312,8 @@ public class Reportes extends javax.swing.JInternalFrame {
                         .addGap(1, 1, 1)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1))
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(nombrePaciente_jLabel))
+                    .addComponent(peso_jProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
@@ -273,10 +322,10 @@ public class Reportes extends javax.swing.JInternalFrame {
             .addGroup(panel6Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(panel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(nombrePaciente_jLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(peso_jProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addContainerGap(11, Short.MAX_VALUE))
@@ -398,7 +447,6 @@ public class Reportes extends javax.swing.JInternalFrame {
     private javax.swing.JPanel background;
     private javax.swing.JLabel comidasRegistradas_jLabel;
     private javax.swing.JLabel dietasRegistradas_jLabel;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
@@ -409,7 +457,7 @@ public class Reportes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JLabel nombrePaciente_jLabel;
     private javax.swing.JLabel objetivosAlcanzados_jLabel;
     private javax.swing.JLabel pacientesTotales_jLabel;
     private Vista.componentes.Panel panel1;
@@ -421,5 +469,6 @@ public class Reportes extends javax.swing.JInternalFrame {
     private Vista.componentes.Panel panel7;
     private Vista.componentes.Panel panel8;
     private Vista.componentes.Panel panel9;
+    private javax.swing.JProgressBar peso_jProgressBar;
     // End of variables declaration//GEN-END:variables
 }

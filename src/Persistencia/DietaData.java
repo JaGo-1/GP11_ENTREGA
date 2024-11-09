@@ -294,4 +294,30 @@ public float obtenerPesoInicialDePaciente(int codigoPaciente) {
     return dietas;
 }
 
+    
+     // Método para cargar la dieta de un paciente desde la base de datos
+    public Dieta cargarDietaDesdeBaseDatos(int pacienteId) {
+        Dieta dieta = null;
+        
+        String sql = "SELECT * FROM dieta WHERE nroPaciente = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, pacienteId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    dieta = new Dieta();
+                    dieta.setCodDieta(rs.getInt("codDieta"));
+                    dieta.setNombreD(rs.getString("nombreD"));
+                    dieta.setFechaIni(rs.getDate("fechaInicial") != null ? rs.getDate("fechaInicial").toLocalDate() : null);
+                    dieta.setFechaFin(rs.getDate("fechaFin") != null ? rs.getDate("fechaFin").toLocalDate() : null);
+                    dieta.setPesoFinal(rs.getFloat("pesoFinal"));
+                    dieta.setEstado(rs.getBoolean("estado"));
+                    dieta.setTotalCalorias(rs.getInt("totalCalorias"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al cargar la dieta desde la base de datos: " + e.getMessage());
+        }
+        
+        return dieta;
+    }
 }

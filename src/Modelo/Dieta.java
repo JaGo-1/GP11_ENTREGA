@@ -1,6 +1,7 @@
 package Modelo;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class Dieta {
@@ -138,6 +139,33 @@ public class Dieta {
         return 1;
     }
 
+       public long getTotalDias() {
+        // Calcula los días totales entre fechaIni y fechaFin
+        if (fechaIni != null && fechaFin != null) {
+            return ChronoUnit.DAYS.between(fechaIni, fechaFin);
+        }
+        return 0;  // Devuelve 0 si alguna de las fechas es null
+    }
+
+    public long getDiasTranscurridos() {
+        // Calcula los días transcurridos desde fechaIni hasta hoy
+        if (fechaIni != null) {
+            return ChronoUnit.DAYS.between(fechaIni, LocalDate.now());
+        }
+        return 0;  // Devuelve 0 si fechaIni es null
+    }
+
+    public double getPorcentajeProgreso() {
+        // Calcula el porcentaje de progreso basado en los días transcurridos
+        long totalDias = getTotalDias();
+        long diasTranscurridos = getDiasTranscurridos();
+        if (totalDias > 0) {
+            return ((double) diasTranscurridos / totalDias) * 100;
+        }
+        return 0;  // Devuelve 0 si totalDias es 0 (sin progreso)
+    }
+    
+    
     @Override
     public String toString() {
         return nombreD;
