@@ -3,21 +3,34 @@ package Vista;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JInternalFrame;
+import javax.swing.border.EmptyBorder;
 
 public class Principal extends javax.swing.JFrame {
 
     public Principal() {
         initComponents();
         
-        //Calcula el tamaño de la pantalla para que el frame ocupe siempre el 75% 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) (screenSize.width * 0.75);
-        int height = (int) (screenSize.height * 0.75);
-
-        setSize(width, height);
+           setLocationRelativeTo(null);
         setResizable(false);
+        
+        //estilos de los botones
+        inicio_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); // top, left, bottom, right
+        pacientes_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); // top, left, bottom, right
+        dietas_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); // top, left, bottom, right
+        menus_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); // top, left, bottom, right
+        comidas_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); // top, left, bottom, right
+        
+        cargarReportes();
+        
+        //Calcula el tamaño de la pantalla para que el frame ocupe siempre el 75% 
+//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//        int width = (int) (screenSize.width * 0.75);
+//        int height = (int) (screenSize.height * 0.75);
 
-        setLocationRelativeTo(null);
+     //   setSize(width, height);
+//        setResizable(false);
+//
+//        setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -25,140 +38,156 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         bg = new javax.swing.JPanel();
-        sideBar_bg = new javax.swing.JPanel();
-        logo = new javax.swing.JLabel();
-        pacientes_btn = new javax.swing.JButton();
-        inicio_btn = new javax.swing.JButton();
-        comidas_btn = new javax.swing.JButton();
-        dietas_btn = new javax.swing.JButton();
-        menus_btn = new javax.swing.JButton();
-        reportes_btn = new javax.swing.JButton();
         escritorio = new javax.swing.JDesktopPane();
-        jdesktopPane_bg = new javax.swing.JPanel();
+        panel1 = new Vista.componentes.Panel();
+        inicio_btn = new javax.swing.JButton();
+        pacientes_btn = new javax.swing.JButton();
+        dietas_btn = new javax.swing.JButton();
+        comidas_btn = new javax.swing.JButton();
+        menus_btn = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        gradiente2 = new Vista.componentes.gradiente();
+        user = new javax.swing.JLabel();
+        user_picture = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        sideBar_bg.setBackground(new java.awt.Color(255, 255, 255));
+        bg.setBackground(new java.awt.Color(242, 242, 242));
 
-        logo.setForeground(new java.awt.Color(204, 204, 204));
-        logo.setText("LOGO");
+        escritorio.setBackground(new java.awt.Color(242, 242, 242));
+        escritorio.setForeground(new java.awt.Color(232, 232, 232));
 
-        pacientes_btn.setText("PACIENTES");
-        pacientes_btn.setBorder(null);
-        pacientes_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pacientes_btnActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
+        escritorio.setLayout(escritorioLayout);
+        escritorioLayout.setHorizontalGroup(
+            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        escritorioLayout.setVerticalGroup(
+            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 519, Short.MAX_VALUE)
+        );
 
-        inicio_btn.setText("INICIO");
+        panel1.setBackground(new java.awt.Color(252, 252, 252));
+
+        inicio_btn.setBackground(new java.awt.Color(252, 252, 252));
+        inicio_btn.setForeground(new java.awt.Color(141, 141, 141));
+        inicio_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/img/home-2.png"))); // NOI18N
+        inicio_btn.setText("     Inicio");
         inicio_btn.setBorder(null);
+        inicio_btn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         inicio_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inicio_btnActionPerformed(evt);
             }
         });
 
-        comidas_btn.setText("COMIDAS");
-        comidas_btn.setBorder(null);
-        comidas_btn.addActionListener(new java.awt.event.ActionListener() {
+        pacientes_btn.setBackground(new java.awt.Color(252, 252, 252));
+        pacientes_btn.setForeground(new java.awt.Color(141, 141, 141));
+        pacientes_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/img/pacientes (1).png"))); // NOI18N
+        pacientes_btn.setText("     Pacientes");
+        pacientes_btn.setBorder(null);
+        pacientes_btn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        pacientes_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comidas_btnActionPerformed(evt);
+                pacientes_btnActionPerformed(evt);
             }
         });
 
-        dietas_btn.setText("DIETAS");
+        dietas_btn.setBackground(new java.awt.Color(252, 252, 252));
+        dietas_btn.setForeground(new java.awt.Color(141, 141, 141));
+        dietas_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/img/dietas (1).png"))); // NOI18N
+        dietas_btn.setText("     Dietas");
         dietas_btn.setBorder(null);
+        dietas_btn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         dietas_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dietas_btnActionPerformed(evt);
             }
         });
 
-        menus_btn.setText("MENUS");
+        comidas_btn.setBackground(new java.awt.Color(252, 252, 252));
+        comidas_btn.setForeground(new java.awt.Color(141, 141, 141));
+        comidas_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/img/comidas-3.png"))); // NOI18N
+        comidas_btn.setText("     Comidas");
+        comidas_btn.setBorder(null);
+        comidas_btn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        comidas_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comidas_btnActionPerformed(evt);
+            }
+        });
+
+        menus_btn.setBackground(new java.awt.Color(252, 252, 252));
+        menus_btn.setForeground(new java.awt.Color(141, 141, 141));
+        menus_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/img/menu-2 (1).png"))); // NOI18N
+        menus_btn.setText("     Menus");
         menus_btn.setBorder(null);
+        menus_btn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         menus_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menus_btnActionPerformed(evt);
             }
         });
 
-        reportes_btn.setText("REPORTES");
-        reportes_btn.setBorder(null);
-        reportes_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reportes_btnActionPerformed(evt);
-            }
-        });
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/img/logo.png"))); // NOI18N
 
-        javax.swing.GroupLayout sideBar_bgLayout = new javax.swing.GroupLayout(sideBar_bg);
-        sideBar_bg.setLayout(sideBar_bgLayout);
-        sideBar_bgLayout.setHorizontalGroup(
-            sideBar_bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(sideBar_bgLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(sideBar_bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(inicio_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pacientes_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(dietas_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)))
-            .addGroup(sideBar_bgLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(menus_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sideBar_bgLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(reportes_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(sideBar_bgLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(comidas_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sideBar_bgLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(logo)
-                .addGap(97, 97, 97))
+        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
+        panel1.setLayout(panel1Layout);
+        panel1Layout.setHorizontalGroup(
+            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(inicio_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pacientes_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(dietas_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(comidas_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(menus_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(panel1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jLabel1)
+                .addContainerGap(36, Short.MAX_VALUE))
         );
-        sideBar_bgLayout.setVerticalGroup(
-            sideBar_bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(sideBar_bgLayout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(logo)
-                .addGap(129, 129, 129)
-                .addComponent(inicio_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pacientes_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dietas_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(menus_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comidas_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(reportes_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        panel1Layout.setVerticalGroup(
+            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(inicio_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pacientes_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(dietas_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(comidas_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(menus_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(159, 159, 159))
         );
 
-        escritorio.setBackground(new java.awt.Color(255, 255, 255));
+        user.setForeground(new java.awt.Color(255, 255, 255));
+        user.setText("USUARIO");
 
-        javax.swing.GroupLayout jdesktopPane_bgLayout = new javax.swing.GroupLayout(jdesktopPane_bg);
-        jdesktopPane_bg.setLayout(jdesktopPane_bgLayout);
-        jdesktopPane_bgLayout.setHorizontalGroup(
-            jdesktopPane_bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 871, Short.MAX_VALUE)
-        );
-        jdesktopPane_bgLayout.setVerticalGroup(
-            jdesktopPane_bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 690, Short.MAX_VALUE)
-        );
+        user_picture.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/img/Avatar.png"))); // NOI18N
+        user_picture.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        escritorio.setLayer(jdesktopPane_bg, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
-        escritorio.setLayout(escritorioLayout);
-        escritorioLayout.setHorizontalGroup(
-            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jdesktopPane_bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        javax.swing.GroupLayout gradiente2Layout = new javax.swing.GroupLayout(gradiente2);
+        gradiente2.setLayout(gradiente2Layout);
+        gradiente2Layout.setHorizontalGroup(
+            gradiente2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradiente2Layout.createSequentialGroup()
+                .addContainerGap(674, Short.MAX_VALUE)
+                .addComponent(user)
+                .addGap(18, 18, 18)
+                .addComponent(user_picture)
+                .addGap(24, 24, 24))
         );
-        escritorioLayout.setVerticalGroup(
-            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jdesktopPane_bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        gradiente2Layout.setVerticalGroup(
+            gradiente2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gradiente2Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(user)
+                .addContainerGap(15, Short.MAX_VALUE))
+            .addComponent(user_picture, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
@@ -166,47 +195,96 @@ public class Principal extends javax.swing.JFrame {
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
-                .addComponent(sideBar_bg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(escritorio))
+                .addGap(12, 12, 12)
+                .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(bgLayout.createSequentialGroup()
+                        .addComponent(gradiente2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 16, Short.MAX_VALUE))
+                    .addGroup(bgLayout.createSequentialGroup()
+                        .addComponent(escritorio)
+                        .addContainerGap())))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(sideBar_bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(escritorio)
+            .addGroup(bgLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgLayout.createSequentialGroup()
+                        .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(bgLayout.createSequentialGroup()
+                        .addComponent(gradiente2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(escritorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 6, Short.MAX_VALUE))))
         );
 
-        getContentPane().add(bg, java.awt.BorderLayout.CENTER);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(bg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void inicio_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inicio_btnActionPerformed
-
+        abrirInternalFrame(new Reportes());
     }//GEN-LAST:event_inicio_btnActionPerformed
 
-    private void dietas_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dietas_btnActionPerformed
-
-        abrirInternalFrame(new VistaDieta());
-    }//GEN-LAST:event_dietas_btnActionPerformed
-
-    private void menus_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menus_btnActionPerformed
-      
-    }//GEN-LAST:event_menus_btnActionPerformed
-
     private void pacientes_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pacientes_btnActionPerformed
-        // TODO add your handling code here:
-                abrirInternalFrame(new GenerarPaciente());
+       abrirInternalFrame(new GenerarPaciente());
     }//GEN-LAST:event_pacientes_btnActionPerformed
 
-    private void reportes_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportes_btnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_reportes_btnActionPerformed
+    private void dietas_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dietas_btnActionPerformed
+        abrirInternalFrame(new VistaDieta());
+    }//GEN-LAST:event_dietas_btnActionPerformed
 
     private void comidas_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comidas_btnActionPerformed
         abrirInternalFrame(new VistaComida());
     }//GEN-LAST:event_comidas_btnActionPerformed
 
+    private void menus_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menus_btnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menus_btnActionPerformed
+
+    
+     private void cargarReportes() {
+        // Crea la instancia del JInternalFrame
+        Reportes reporteFrame = new Reportes();
+
+        // Configura el tamaño del JInternalFrame para que ocupe todo el JDesktopPane
+        reporteFrame.setSize(escritorio.getWidth(), escritorio.getHeight());
+        reporteFrame.setLocation(0, 0);
+
+        // Desactiva los bordes y la barra de título del JInternalFrame
+        reporteFrame.setBorder(null);
+        reporteFrame.setClosable(false);
+        reporteFrame.setMaximizable(false);
+        reporteFrame.setIconifiable(false);
+        reporteFrame.setResizable(false);
+
+        // Agrega el JInternalFrame al desktopPane
+        escritorio.add(reporteFrame);
+
+        // Asegúrate de que el JInternalFrame sea visible y maximizado
+        reporteFrame.setVisible(true);
+
+        // Maximiza el JInternalFrame para que ocupe el tamaño completo del JDesktopPane
+        try {
+            reporteFrame.setMaximum(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+     
     private void abrirInternalFrame(JInternalFrame iframe){
         for (javax.swing.JInternalFrame frame : escritorio.getAllFrames()) {
             frame.dispose();
@@ -221,12 +299,14 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton comidas_btn;
     private javax.swing.JButton dietas_btn;
     private javax.swing.JDesktopPane escritorio;
+    private javax.swing.JDesktopPane escritorio1;
+    private Vista.componentes.gradiente gradiente2;
     private javax.swing.JButton inicio_btn;
-    private javax.swing.JPanel jdesktopPane_bg;
-    private javax.swing.JLabel logo;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JButton menus_btn;
     private javax.swing.JButton pacientes_btn;
-    private javax.swing.JButton reportes_btn;
-    private javax.swing.JPanel sideBar_bg;
+    private Vista.componentes.Panel panel1;
+    private javax.swing.JLabel user;
+    private javax.swing.JLabel user_picture;
     // End of variables declaration//GEN-END:variables
 }

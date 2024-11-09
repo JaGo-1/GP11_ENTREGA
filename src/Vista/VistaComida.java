@@ -14,6 +14,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 
 public class VistaComida extends javax.swing.JInternalFrame {
@@ -34,11 +35,17 @@ public class VistaComida extends javax.swing.JInternalFrame {
         this.setResizable(false);
         this.setMaximizable(false);
         
-        //internalFrame siempre maximizado
+        setSize(763, 501);
+        
+        // Ocultar la barra de título
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) getUI();
+        ui.setNorthPane(null); 
+        
+         //internalFrame siempre maximizado
         try {
             this.setMaximum(true);
         } catch (PropertyVetoException ex) {
-            Logger.getLogger(VistaComida.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.setFrameIcon(new ImageIcon());
         
@@ -114,35 +121,44 @@ public class VistaComida extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         bg = new javax.swing.JPanel();
+        ingresarComidas_text = new javax.swing.JLabel();
+        gestionComidas_text = new javax.swing.JLabel();
+        panel1 = new Vista.componentes.Panel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaComidas = new javax.swing.JTable();
         borrar_btn = new javax.swing.JButton();
-        guardar_btn = new javax.swing.JButton();
         nuevo_btn = new javax.swing.JButton();
         verTodo_radio = new javax.swing.JRadioButton();
-        filtrarIngredientes_radio = new javax.swing.JRadioButton();
+        panel2 = new Vista.componentes.Panel();
         filtrarCalorias_radio = new javax.swing.JRadioButton();
-        nombre_textField = new javax.swing.JTextField();
-        baja_radio = new javax.swing.JRadioButton();
-        ingresarComidas_text = new javax.swing.JLabel();
+        filtroCalorias_textField = new javax.swing.JTextField();
+        filtrarIngredientes_radio = new javax.swing.JRadioButton();
+        filtroIngredientes_textField = new javax.swing.JTextField();
+        panel3 = new Vista.componentes.Panel();
         nombre_text = new javax.swing.JLabel();
+        nombre_textField = new javax.swing.JTextField();
         tipoComida_text = new javax.swing.JLabel();
+        tipoComida_textField = new javax.swing.JTextField();
         detalle_text = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         detalle_textArea = new javax.swing.JTextArea();
         calorias_text = new javax.swing.JLabel();
-        tipoComida_textField = new javax.swing.JTextField();
         calorias_spinner = new javax.swing.JSpinner();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        gestionComidas_text = new javax.swing.JLabel();
-        filtroCalorias_textField = new javax.swing.JTextField();
-        filtroIngredientes_textField = new javax.swing.JTextField();
+        baja_radio = new javax.swing.JRadioButton();
+        guardar_btn = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(null);
 
-        bg.setBackground(new java.awt.Color(255, 255, 255));
+        bg.setBackground(new java.awt.Color(242, 242, 242));
+
+        ingresarComidas_text.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        ingresarComidas_text.setText("Ingresar Comidas");
+
+        gestionComidas_text.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        gestionComidas_text.setText("Gestión de Comidas");
+
+        panel1.setBackground(new java.awt.Color(255, 255, 255));
 
         tablaComidas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -164,13 +180,6 @@ public class VistaComida extends javax.swing.JInternalFrame {
             }
         });
 
-        guardar_btn.setText("Guardar");
-        guardar_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                guardar_btnActionPerformed(evt);
-            }
-        });
-
         nuevo_btn.setText("Nuevo");
         nuevo_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,12 +194,37 @@ public class VistaComida extends javax.swing.JInternalFrame {
             }
         });
 
-        filtrarIngredientes_radio.setText("Filtrar por ingredientes");
-        filtrarIngredientes_radio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filtrarIngredientes_radioActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
+        panel1.setLayout(panel1Layout);
+        panel1Layout.setHorizontalGroup(
+            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel1Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(panel1Layout.createSequentialGroup()
+                        .addComponent(verTodo_radio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(nuevo_btn)
+                        .addGap(18, 18, 18)
+                        .addComponent(borrar_btn))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+        panel1Layout.setVerticalGroup(
+            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(borrar_btn)
+                        .addComponent(nuevo_btn))
+                    .addComponent(verTodo_radio))
+                .addGap(33, 33, 33))
+        );
+
+        panel2.setBackground(new java.awt.Color(255, 255, 255));
 
         filtrarCalorias_radio.setText("Filtrar por calorías");
         filtrarCalorias_radio.addActionListener(new java.awt.event.ActionListener() {
@@ -199,15 +233,44 @@ public class VistaComida extends javax.swing.JInternalFrame {
             }
         });
 
-        baja_radio.setText("Baja");
-        baja_radio.addActionListener(new java.awt.event.ActionListener() {
+        filtrarIngredientes_radio.setText("Filtrar por ingredientes");
+        filtrarIngredientes_radio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                baja_radioActionPerformed(evt);
+                filtrarIngredientes_radioActionPerformed(evt);
             }
         });
 
-        ingresarComidas_text.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        ingresarComidas_text.setText("Ingresar Comidas");
+        javax.swing.GroupLayout panel2Layout = new javax.swing.GroupLayout(panel2);
+        panel2.setLayout(panel2Layout);
+        panel2Layout.setHorizontalGroup(
+            panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(filtrarCalorias_radio)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(filtroCalorias_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(filtrarIngredientes_radio)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(filtroIngredientes_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
+        );
+        panel2Layout.setVerticalGroup(
+            panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(filtroCalorias_textField)
+                    .addGroup(panel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(panel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(filtrarCalorias_radio)
+                            .addComponent(filtrarIngredientes_radio)
+                            .addComponent(filtroIngredientes_textField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
+        );
+
+        panel3.setBackground(new java.awt.Color(255, 255, 255));
 
         nombre_text.setText("Nombre");
 
@@ -221,146 +284,114 @@ public class VistaComida extends javax.swing.JInternalFrame {
 
         calorias_text.setText("Calorias (100gr)");
 
-        jPanel1.setBackground(new java.awt.Color(250, 250, 250));
-        jPanel1.setForeground(new java.awt.Color(204, 204, 204));
+        baja_radio.setText("Baja");
+        baja_radio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                baja_radioActionPerformed(evt);
+            }
+        });
 
-        jLabel6.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel6.setText("USUARIO");
+        guardar_btn.setText("Guardar");
+        guardar_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardar_btnActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addGap(33, 33, 33))
+        javax.swing.GroupLayout panel3Layout = new javax.swing.GroupLayout(panel3);
+        panel3.setLayout(panel3Layout);
+        panel3Layout.setHorizontalGroup(
+            panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel3Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(baja_radio)
+                    .addGroup(panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(guardar_btn)
+                        .addGroup(panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(calorias_text)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(detalle_text)
+                            .addComponent(tipoComida_textField, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+                            .addComponent(tipoComida_text)
+                            .addComponent(nombre_textField)
+                            .addComponent(nombre_text)
+                            .addComponent(calorias_spinner))))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jLabel6)
-                .addContainerGap(20, Short.MAX_VALUE))
+        panel3Layout.setVerticalGroup(
+            panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel3Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(nombre_text)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nombre_textField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(tipoComida_text)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tipoComida_textField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(detalle_text)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(calorias_text)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(calorias_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(baja_radio)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(guardar_btn)
+                .addGap(36, 36, 36))
         );
-
-        gestionComidas_text.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        gestionComidas_text.setText("Gestion de Comidas");
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bgLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(bgLayout.createSequentialGroup()
-                .addGap(55, 55, 55)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(gestionComidas_text)
-                    .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(bgLayout.createSequentialGroup()
-                            .addComponent(nuevo_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(guardar_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(borrar_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(bgLayout.createSequentialGroup()
-                            .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 687, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, bgLayout.createSequentialGroup()
-                                    .addComponent(verTodo_radio)
-                                    .addGap(43, 43, 43)
-                                    .addComponent(filtrarCalorias_radio)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(filtroCalorias_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(40, 40, 40)
-                                    .addComponent(filtrarIngredientes_radio)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(filtroIngredientes_textField)))
-                            .addGap(46, 46, 46)
-                            .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jScrollPane2)
-                                    .addComponent(tipoComida_textField)
-                                    .addComponent(nombre_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(calorias_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(baja_radio)
-                                .addComponent(ingresarComidas_text)
-                                .addComponent(nombre_text)
-                                .addComponent(tipoComida_text)
-                                .addComponent(detalle_text)
-                                .addComponent(calorias_text)))))
-                .addContainerGap(183, Short.MAX_VALUE))
+                    .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(panel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(panel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(gestionComidas_text))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ingresarComidas_text)
+                    .addComponent(panel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
-                .addComponent(gestionComidas_text)
-                .addGap(32, 32, 32)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(ingresarComidas_text)
-                        .addGap(18, 18, 18)
-                        .addComponent(nombre_text)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nombre_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(tipoComida_text)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tipoComida_textField, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(detalle_text)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(calorias_text)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(calorias_spinner, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(baja_radio))
-                    .addGroup(bgLayout.createSequentialGroup()
-                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(filtrarIngredientes_radio)
-                            .addComponent(filtrarCalorias_radio)
-                            .addComponent(verTodo_radio)
-                            .addComponent(filtroCalorias_textField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(filtroIngredientes_textField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(32, 32, 32)
+                .addGap(7, 7, 7)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(borrar_btn)
-                    .addComponent(guardar_btn)
-                    .addComponent(nuevo_btn))
-                .addGap(67, 67, 67))
+                    .addComponent(ingresarComidas_text)
+                    .addComponent(gestionComidas_text))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(bgLayout.createSequentialGroup()
+                        .addComponent(panel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void verTodo_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verTodo_radioActionPerformed
-        llenarTabla(cd.listarComidas());
-        filtrarCalorias_radio.setSelected(false);
-        filtrarIngredientes_radio.setSelected(false);
-        filtroCalorias_textField.setEnabled(false);
-        filtroIngredientes_textField.setEnabled(false);
-    }//GEN-LAST:event_verTodo_radioActionPerformed
 
     private void filtrarCalorias_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtrarCalorias_radioActionPerformed
         tabla.setRowCount(0);
@@ -456,6 +487,14 @@ public class VistaComida extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_baja_radioActionPerformed
 
+    private void verTodo_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verTodo_radioActionPerformed
+        llenarTabla(cd.listarComidas());
+        filtrarCalorias_radio.setSelected(false);
+        filtrarIngredientes_radio.setSelected(false);
+        filtroCalorias_textField.setEnabled(false);
+        filtroIngredientes_textField.setEnabled(false);
+    }//GEN-LAST:event_verTodo_radioActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton baja_radio;
@@ -472,13 +511,14 @@ public class VistaComida extends javax.swing.JInternalFrame {
     private javax.swing.JLabel gestionComidas_text;
     private javax.swing.JButton guardar_btn;
     private javax.swing.JLabel ingresarComidas_text;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel nombre_text;
     private javax.swing.JTextField nombre_textField;
     private javax.swing.JButton nuevo_btn;
+    private Vista.componentes.Panel panel1;
+    private Vista.componentes.Panel panel2;
+    private Vista.componentes.Panel panel3;
     private javax.swing.JTable tablaComidas;
     private javax.swing.JLabel tipoComida_text;
     private javax.swing.JTextField tipoComida_textField;

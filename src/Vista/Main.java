@@ -2,6 +2,7 @@ package Vista;
 import java.sql.Connection;
 import javax.swing.*;
 import Persistencia.Conexion;
+import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -29,7 +30,7 @@ public class Main {
             
          //   System.out.println(comidas);
             
-          //  FlatLightLaf.setup(); //LIBRERIA PARA LA GUI
+            FlatLightLaf.setup(); //LIBRERIA PARA LA GUI
             Principal frame = new Principal();
             frame.setVisible(true);
        
