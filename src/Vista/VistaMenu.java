@@ -2,33 +2,65 @@ package Vista;
 
 
 import Modelo.Comida;
+import Modelo.Dieta;
 import Modelo.MenuDiario;
 import Modelo.RenglonDeMenu;
 import Modelo.TipoComida;
 import Persistencia.ComidaData;
+import Persistencia.DietaData;
+import Persistencia.MenuDiarioData;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.swing.ImageIcon;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
 
 
 public class VistaMenu extends javax.swing.JInternalFrame {
-
+    private List<MenuDiario> menuDiarios;
+    private MenuDiarioData md = new MenuDiarioData();
+    private DietaData dd = new DietaData();
    
-   private DefaultTableModel tableModel;
-public VistaMenu() {
-        initComponents();
-        
-       tableModel = new DefaultTableModel(new Object[][] {},
-        new String[] {
-            "Día", "Calorías Totales", "Desayuno", "Almuerzo", "Snack", "Merienda", "Cena"
-        });
+    private DefaultTableModel tableModel;
     
-    jTablelistarMenusDiarios.setModel(tableModel);
+    public VistaMenu() {
+        initComponents();
+        this.setResizable(false);
+        this.setMaximizable(false);
+               setSize(763, 501);
+
+        // Ocultar la barra de título
+        BasicInternalFrameUI ui = (BasicInternalFrameUI) getUI();
+        ui.setNorthPane(null);
+
+        //internalFrame siempre maximizado
+        try {
+            this.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.setFrameIcon(new ImageIcon());
+        
+        tableModel = new DefaultTableModel(new Object[][] {},
+//        new String[] {
+//            "Día", "Calorías Totales", "Desayuno", "Almuerzo", "Snack", "Merienda", "Cena"
+//        }
+                new String[] { "Día", "Comida", "Calorías", "Detalle"}
+        );
+    
+        jTablelistarMenusDiarios.setModel(tableModel);
+        cargarDatosEnComboBoxes();
+        spinnerConfig();
+    
     }
 
     
@@ -42,7 +74,15 @@ public VistaMenu() {
         jTablelistarMenusDiarios = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        dieta_comboBox = new javax.swing.JComboBox<>();
+        dias_jSpinner = new javax.swing.JSpinner();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        totalCalorias_label = new javax.swing.JLabel();
+
+        setBorder(null);
 
         jButtonBuscaringredientes.setText("Buscar");
         jButtonBuscaringredientes.addActionListener(new java.awt.event.ActionListener() {
@@ -64,49 +104,79 @@ public VistaMenu() {
         ));
         jScrollPane1.setViewportView(jTablelistarMenusDiarios);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Generar Menus");
 
-        jLabel2.setText("seleccionar ingredientes");
+        jLabel2.setText("Seleccionar dieta");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        dieta_comboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                dieta_comboBoxActionPerformed(evt);
             }
         });
+
+        jButton1.setText("Nuevo");
+
+        jButton2.setText("Borrar");
+
+        jButton3.setText("Editar");
+
+        jLabel3.setText("Total calorias: ");
+
+        totalCalorias_label.setText("{}");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonBuscaringredientes)
-                        .addGap(56, 56, 56))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(256, 256, 256)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addGap(17, 17, 17))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(dieta_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(dias_jSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(jButtonBuscaringredientes)
+                .addGap(131, 131, 131)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(totalCalorias_label)
+                .addContainerGap(100, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
                 .addComponent(jLabel1)
-                .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonBuscaringredientes)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(42, 42, 42)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(dieta_comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dias_jSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBuscaringredientes)
+                    .addComponent(jLabel3)
+                    .addComponent(totalCalorias_label))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton3)
+                    .addComponent(jButton2))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -126,48 +196,57 @@ public VistaMenu() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonBuscaringredientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscaringredientesActionPerformed
-try {
-        
-        String ingredientesTexto = jTextField1.getText();
-        List<String> ingredientes = Arrays.asList(ingredientesTexto.split(","));
-
-        
-        ComidaData comidaData = new ComidaData();  
-        List<Comida> comidasFiltradas = comidaData.filtrarPorIngredientes(ingredientes);
-
-        
-        List<MenuDiario> menusGenerados = generarMenus(comidasFiltradas);
-
-        
-        llenarTablaConMenus(menusGenerados);
-    } catch (Exception e) {
-        System.out.println("Error al generar los menús: " + e.getMessage());
+        try {
+            
+            Dieta dieta = (Dieta)dieta_comboBox.getSelectedItem();
+            int dias = (int)dias_jSpinner.getValue();
+            menuDiarios = md.obtenerMenuDiariosPorDieta(dieta.getCodDieta(), dias);
+            llenarTablaConMenus(menuDiarios);
+            
+            
+            totalCalorias_label.setText(sumarCalorias(menuDiarios)+"");
+            
+      
+        } catch (Exception e) {
+            System.out.println("Error al generar los menús: " + e.getMessage());
     }
-
-        
-        
-        
         
     }//GEN-LAST:event_jButtonBuscaringredientesActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void dieta_comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dieta_comboBoxActionPerformed
+//         Dieta dieta = (Dieta)dieta_comboBox.getSelectedItem();
+//         menuDiarios = md.obtenerMenuDiariosPorDieta(dieta.getCodDieta(), 3);
+//         llenarTablaConMenus(menuDiarios);
+    }//GEN-LAST:event_dieta_comboBoxActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSpinner dias_jSpinner;
+    private javax.swing.JComboBox<Dieta> dieta_comboBox;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButtonBuscaringredientes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTablelistarMenusDiarios;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel totalCalorias_label;
     // End of variables declaration//GEN-END:variables
 
   
     
- 
+   private int sumarCalorias (List<MenuDiario> m){
+        int contador = 0;
+        for (MenuDiario menu : m){
+            for (RenglonDeMenu renglon : menu.getRenglones()){
+                contador = contador + renglon.getSubTotalCalorias();
+            }
+        }
+        return contador;
+    }
     
 private List<Comida> filtrarComidasPorIngredientes(String ingredientesTexto) {
     List<Comida> comidasFiltradas = new ArrayList<>();
@@ -251,7 +330,7 @@ private List<MenuDiario> generarMenus(List<Comida> comidasFiltradas) {
         }
         
         menu.setRenglones(renglones);  
-        menu.setCaloriasDelMenu(caloriasMenu);  
+    //    menu.setCaloriasDelMenu(caloriasMenu);  
         
         menus.add(menu);  
     }
@@ -262,32 +341,52 @@ private List<MenuDiario> generarMenus(List<Comida> comidasFiltradas) {
 
 
 private void llenarTablaConMenus(List<MenuDiario> menusGenerados) {
-    DefaultTableModel model = (DefaultTableModel) jTablelistarMenusDiarios.getModel();
-    model.setRowCount(0);  
 
-    for (MenuDiario menu : menusGenerados) {
-        Object[] row = new Object[7];  
-        
-        
-        row[0] = "Día " + menu.getCodMenu();  
-        row[1] = menu.getCaloriasDelMenu() + " kcal";  
 
-        
-        String[] renglones = new String[5];
+    tableModel.setRowCount(0);
 
-        
-        for (RenglonDeMenu renglon : menu.getRenglones()) {
-           
-            renglones[renglon.getNroRenglon() - 1] = renglon.getComida().getNombre() + " (" + renglon.getCantidadGrms() + "g)";
+for (MenuDiario menuDiario : menuDiarios) {
+            int codMenu = menuDiario.getCodMenu();
+            int diaNro = menuDiario.getDiaNro();
+            
+            
+            for (RenglonDeMenu renglon : menuDiario.getRenglones()) {
+                String comida = renglon.getComida().getNombre();
+                String detalle = renglon.getComida().getDetalle();
+                int calorias = renglon.getSubTotalCalorias();
+
+                Object[] fila = {diaNro, comida, calorias, detalle};
+                tableModel.addRow(fila);
+            }
         }
+    
+}
 
-        
-        for (int i = 0; i < 5; i++) {
-            row[i + 2] = renglones[i];  
-        }
 
-        
-        model.addRow(row);
+public int sumarCalorias(MenuDiario menu) {
+    int contador = 0;
+    for (RenglonDeMenu renglon : menu.getRenglones()) {
+        contador += renglon.getSubTotalCalorias();
     }
+    return contador;
+}
+
+private void cargarDatosEnComboBoxes() {
+
+        dieta_comboBox.removeAllItems();
+        List<Dieta> dietas = dd.listarDietas();
+        for (Dieta dieta : dietas) {
+            dieta_comboBox.addItem(dieta);
+        }
+        }
+
+private void spinnerConfig(){
+    int min = 3;
+        int max = 7;
+        int initialValue = 5;
+        int stepSize = 1;
+
+        SpinnerNumberModel modelo = new SpinnerNumberModel(initialValue, min, max, stepSize);
+        dias_jSpinner.setModel(modelo);
 }
 }

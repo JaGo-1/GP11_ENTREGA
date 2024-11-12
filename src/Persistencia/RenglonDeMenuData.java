@@ -111,27 +111,84 @@ public void actualizarRenglonDeMenu(RenglonDeMenu renglon) {
  
  
 
-public List<RenglonDeMenu> listarRenglonesDeMenu() {
-    List<RenglonDeMenu> renglones = new ArrayList<>();
-    String sql = "SELECT * FROM renglonDeMenu";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            int nroRenglonDb = rs.getInt("nroRenglon");
-            int codMenuDb = rs.getInt("codMenu");  // Recuperamos el código del menú
-            Comida comida = buscarComida(rs.getInt("codComida"));  // Recuperamos la comida
-            double cantidadGrmsDb = rs.getDouble("cantidadGrms");
+//public List<RenglonDeMenu> listarRenglonesDeMenu() {
+//    List<RenglonDeMenu> renglones = new ArrayList<>();
+//    String sql = "SELECT * FROM renglonDeMenu";
+//    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+//        ResultSet rs = ps.executeQuery();
+//        while (rs.next()) {
+//            int nroRenglonDb = rs.getInt("nroRenglon");
+//            int codMenuDb = rs.getInt("codMenu");  // Recuperamos el código del menú
+//            Comida comida = buscarComida(rs.getInt("codComida"));  // Recuperamos la comida
+//            double cantidadGrmsDb = rs.getDouble("cantidadGrms");
+//
+//            // Usamos el constructor con los parámetros correctos
+//            RenglonDeMenu renglon = new RenglonDeMenu(nroRenglonDb, codMenuDb, comida, cantidadGrmsDb);
+//            renglon.setSubTotalCalorias(rs.getInt("subTotalCalorias"));  // Establecemos el subtotal de calorías
+//
+//            // Agregar el renglón a la lista
+//            renglones.add(renglon);
+//        }
+//    } catch (SQLException e) {
+//        System.out.println("Error al listar renglones de menú: " + e.getMessage());
+//    }
+//    return renglones;
+//}
 
-            // Usamos el constructor con los parámetros correctos
-            RenglonDeMenu renglon = new RenglonDeMenu(nroRenglonDb, codMenuDb, comida, cantidadGrmsDb);
-            renglon.setSubTotalCalorias(rs.getInt("subTotalCalorias"));  // Establecemos el subtotal de calorías
-
-            // Agregar el renglón a la lista
-            renglones.add(renglon);
+        public List<RenglonDeMenu> listarRenglonesDeMenu() {
+        List<RenglonDeMenu> renglones = new ArrayList<>();
+        String sql = "SELECT * FROM renglondemenu";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                RenglonDeMenu renglon = new RenglonDeMenu();
+                renglon.setNroRenglon(rs.getInt("nroRenglon"));
+                int codComida = (rs.getInt("codComida"));
+                ComidaData cd = new ComidaData();
+                renglon.setComida(cd.buscarComida(codComida));
+                 
+                renglon.setCantidadGrms(rs.getDouble("cantidadGrms"));
+                renglon.setSubTotalCalorias(rs.getInt("subTotalCalorias"));
+                renglones.add(renglon);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al listar renglones de menu: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("Error al listar renglones de menú: " + e.getMessage());
+        return renglones;
     }
-    return renglones;
-}
+        
+    public List<RenglonDeMenu> obtenerRenglonesDeMenu(int codMenu) {
+        List<RenglonDeMenu> renglones = new ArrayList<>();
+        int count = 0;
+        
+        String sql = "SELECT * FROM renglondemenu WHERE codMenu = ?";
+        
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+             
+            stmt.setInt(1, codMenu);
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                RenglonDeMenu renglon = new RenglonDeMenu();
+                renglon.setNroRenglon(rs.getInt("nroRenglon"));
+                renglon.setCantidadGrms(rs.getDouble("cantidadGrms"));
+                renglon.setSubTotalCalorias(rs.getInt("subTotalCalorias"));
+                
+                ComidaData cd = new ComidaData();
+                Comida comida = cd.buscarComida(rs.getInt("codComida"));
+                renglon.setComida(comida);
+                
+                renglones.add(renglon);
+                count ++; 
+                //esto lo tengo que mejorar, se puede poner un limit en la consulta SQL que funciona igual
+                //la idea es que no se pase de 5 renglones(?
+                if (count == 5){ break;}
+            }
+        }catch (SQLException e) {
+            System.out.println("Error al listar renglones de menu: " + e.getMessage());
+        }
+        return renglones;
+    }
+
+
 }
