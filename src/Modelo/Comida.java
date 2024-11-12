@@ -5,15 +5,17 @@ import java.util.List;
 
 
 public class Comida {
-    int codComida;
-    String nombre;
-    String tipoComida;
-    int caloriasPor100g;
-    String detalle;
-    boolean baja;
+      private int codComida;
+    private String nombre;
+    private TipoComida tipoComida;  
+    private int caloriasPor100g;
+    private String detalle;
+    private boolean baja;
+
+    // Constructor sin parámetros (por si necesito crear un objeto vacío)
+    public Comida() {}
     
-    
-    public Comida( String nombre, String tipoComida,  String detalle, int caloriasPor100g, boolean baja) {
+    public Comida(String nombre, TipoComida tipoComida, String detalle, int caloriasPor100g, boolean baja) {
         this.nombre = nombre;
         this.tipoComida = tipoComida;
         this.caloriasPor100g = caloriasPor100g;
@@ -21,15 +23,13 @@ public class Comida {
         this.baja = baja;
     }
 
-    public Comida() {
-    }
-
+    // Getters y Setters
     public int getCodComida() {
         return codComida;
     }
 
-    public void setCodComida(int conComida) {
-        this.codComida = conComida;
+    public void setCodComida(int codComida) {
+        this.codComida = codComida;
     }
 
     public String getNombre() {
@@ -40,11 +40,11 @@ public class Comida {
         this.nombre = nombre;
     }
 
-    public String getTipoComida() {
+    public TipoComida getTipoComida() {
         return tipoComida;
     }
 
-    public void setTipoComida(String tipoComida) {
+    public void setTipoComida(TipoComida tipoComida) {
         this.tipoComida = tipoComida;
     }
 
@@ -71,32 +71,11 @@ public class Comida {
     public void setBaja(boolean baja) {
         this.baja = baja;
     }
-    
-    //metodos (Añadí una clase Alimento para que coincida con el ejercicio, este es de tipo ENUM)
-    
-    public List<Alimento> filtrarxIngred(int conComida){
-        
-        return null;
-    }
-    
-    public List<Alimento> filtrarxNombre(String nombre){
-        
-        return null;
-    }
-    
-    public List<Alimento> filtrarxCalorias(int caloriasPor100gr){
-        
-        return null;
-    }
-    
-    public void modificarAlimento(Comida comida){
-        
-    }
+
 
     @Override
     public String toString() {
-        return  "codComida =" + codComida + ", nombre = " + nombre + ", tipoComida = " + tipoComida + ", caloriasPor100g = " + caloriasPor100g + ", detalle = " + detalle + ", baja = " + baja + ".\n";
+        return "Comida{" + "codComida=" + codComida + ", nombre=" + nombre + ", tipoComida=" + tipoComida + ", caloriasPor100g=" + caloriasPor100g + ", detalle=" + detalle + ", baja=" + baja + '}';
     }
-    
-    
 }
+

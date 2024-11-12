@@ -1,26 +1,23 @@
 package Modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
-
 public class MenuDiario {
-int codMenu;
-int diaNro;
-List <RenglonDeMenu> comidas;
-boolean estado;
-Dieta dieta;
+private int codMenu;  
+    private List<RenglonDeMenu> renglones;  
+    private int caloriasDelMenu;  
 
-    public MenuDiario(int codMenu, int diaNro, List<RenglonDeMenu> comidas, boolean estado, Dieta dieta) {
+    
+    public MenuDiario(int codMenu, List<RenglonDeMenu> renglones) {
         this.codMenu = codMenu;
-        this.diaNro = diaNro;
-        this.comidas = comidas;
-        this.estado = estado;
-        this.dieta = dieta;
+        this.renglones = renglones;
     }
 
-    public MenuDiario() {
-    }
+    
+    public MenuDiario() {}
 
+   
     public int getCodMenu() {
         return codMenu;
     }
@@ -29,64 +26,21 @@ Dieta dieta;
         this.codMenu = codMenu;
     }
 
-    public int getDiaNro() {
-        return diaNro;
-    }
-
-    public void setDiaNro(int diaNro) {
-        this.diaNro = diaNro;
-    }
-
-    public List<RenglonDeMenu> getComidas() {
-        return comidas;
-    }
-
-    public void setComidas(List<RenglonDeMenu> comidas) {
-        this.comidas = comidas;
-    }
-
-    public boolean isEstado() {
-        return estado;
-    }
-
-    public void setEstado(boolean estado) {
-        this.estado = estado;
-    }
-
-    public Dieta getDieta() {
-        return dieta;
-    }
-
-    public void setDieta(Dieta dieta) {
-        this.dieta = dieta;
-    }
-
-// métodos
     
-    public void alterarDietadiaria(){
-        
+    public List<RenglonDeMenu> getRenglones() {
+        return renglones;
     }
-    
-    public MenuDiario generarDietaDiaria(){
-        
-        return null;
+
+    public void setRenglones(List<RenglonDeMenu> renglones) {
+        this.renglones = renglones;
     }
+
     
-    public MenuDiario armarDietaDiaria(){
-        
-        return null;
+    public int getCaloriasDelMenu() {
+        return caloriasDelMenu;
     }
-    
-    public void addRenglon (RenglonDeMenu renglon){
-        
-    }
-    
-    public int calcularCaloriasDelDia(){
-        
-        return 1;
-    }
-    
-    public void imprimirMenuDiario(){
-        
+
+    public void setCaloriasDelMenu(int caloriasDelMenu) {
+        this.caloriasDelMenu = caloriasDelMenu;
     }
 }

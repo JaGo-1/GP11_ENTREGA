@@ -3,13 +3,17 @@
 package Persistencia;
 
 import Modelo.Comida;
+import Modelo.TipoComida;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 
 public class ComidaData {
@@ -19,12 +23,15 @@ public class ComidaData {
         this.connection = Conexion.getConexion();
     }
 
+    
+    
     public void guardarComida(Comida comida) {
-        String sql = "INSERT INTO comida (nombre, tipoDeComida, detalle, caloriaspor100grms, baja) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO comida (nombre, tipoDeComida, detalle, caloriasPor100grms, baja) VALUES (?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, comida.getNombre());
-            ps.setString(2, comida.getTipoComida());
+           
+            ps.setString(2, comida.getTipoComida().name());  
             ps.setString(3, comida.getDetalle());
             ps.setInt(4, comida.getCaloriasPor100g());
             ps.setBoolean(5, comida.isBaja());
@@ -39,43 +46,50 @@ public class ComidaData {
         } catch (SQLException e) {
             System.out.println("Error al guardar comida: " + e.getMessage());
         }
-        System.out.println("comida guardada");
+        System.out.println("Comida guardada");
     }
 
+    
+    
+    
     public void actualizarComida(Comida comida) {
-        String sql = "UPDATE comida SET nombre = ?, tipoDeComida = ?, caloriaspor100grms = ?, detalle = ?, baja = ? WHERE codComida = ?";
+        String sql = "UPDATE comida SET nombre = ?, tipoDeComida = ?, caloriasPor100grms = ?, detalle = ?, baja = ? WHERE codComida = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, comida.getNombre());
-            ps.setString(2, comida.getTipoComida());
+            
+            ps.setString(2, comida.getTipoComida().name()); 
             ps.setInt(3, comida.getCaloriasPor100g());
             ps.setString(4, comida.getDetalle());
             ps.setBoolean(5, comida.isBaja());
-            System.out.println(comida.getCodComida());
             ps.setInt(6, comida.getCodComida());
             int result = ps.executeUpdate();
             
-              if (result == 1) {
+            if (result == 1) {
                 JOptionPane.showMessageDialog(null, "Se ha modificado la comida");
             } else {
-                  System.out.println("Ocurrio un error modificando la comida");
+                System.out.println("Ocurrió un error modificando la comida");
             }
         } catch (SQLException e) {
             System.out.println("Error al actualizar comida: " + e.getMessage());
         }
     }
 
-    public Comida buscarComida(int conComida) {
+    
+    
+    
+    public Comida buscarComida(int codComida) {
         Comida comida = null;
-        String sql = "SELECT * FROM comida WHERE conComida = ?";
+        String sql = "SELECT * FROM comida WHERE codComida = ?";  
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, conComida);
+            ps.setInt(1, codComida);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 comida = new Comida();
-                comida.setCodComida(rs.getInt("conComida"));
+                comida.setCodComida(rs.getInt("codComida"));
                 comida.setNombre(rs.getString("nombre"));
-                comida.setTipoComida(rs.getString("tipoComida"));
-                comida.setCaloriasPor100g(rs.getInt("caloriasPor100g"));
+                
+                comida.setTipoComida(TipoComida.valueOf(rs.getString("tipoDeComida").toUpperCase()));  // Asegúrate de que el nombre en la base de datos esté en mayúsculas
+                comida.setCaloriasPor100g(rs.getInt("caloriasPor100grms"));
                 comida.setDetalle(rs.getString("detalle"));
                 comida.setBaja(rs.getBoolean("baja"));
             }
@@ -85,6 +99,10 @@ public class ComidaData {
         return comida;
     }
 
+    
+    
+    
+    
     public void borrarComida(int codComida) {
         String sql = "DELETE FROM comida WHERE codComida = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -95,18 +113,22 @@ public class ComidaData {
         }
     }
 
+    
+    
+    
     public List<Comida> listarComidas() {
         List<Comida> comidas = new ArrayList<>();
-        String sql = "SELECT * FROM comida";
+        String sql = "SELECT * FROM comida";  
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Comida comida = new Comida();
                 comida.setCodComida(rs.getInt("codComida"));
                 comida.setNombre(rs.getString("nombre"));
-                comida.setTipoComida(rs.getString("tipoDeComida"));
+                
+                comida.setTipoComida(TipoComida.valueOf(rs.getString("tipoDeComida").toUpperCase()));  // Convertir el String a Enum
                 comida.setDetalle(rs.getString("detalle"));
-                comida.setCaloriasPor100g(rs.getInt("caloriaspor100grms"));
+                comida.setCaloriasPor100g(rs.getInt("caloriasPor100grms"));
                 comida.setBaja(rs.getBoolean("baja"));
                 comidas.add(comida);
             }
@@ -116,33 +138,131 @@ public class ComidaData {
         
         return comidas;
     }
+
+   public List<Comida> filtrarPorIngredientes(List<String> ingredientes) {
+    List<Comida> comidas = new ArrayList<>();
+
    
+    if (ingredientes == null || ingredientes.isEmpty()) {
+        return comidas;  
+    }
+
     
-    public List<Comida> filtrarPorCalorias (int calorias){
-        List<Comida> comidas = new ArrayList<>();
-        String sql = "SELECT * FROM comida WHERE caloriaspor100grms < ?";
+    StringBuilder sql = new StringBuilder("SELECT * FROM comida WHERE ");
+
+    
+    List<String> ingredientesFiltrados = ingredientes.stream()
+            .filter(ingrediente -> ingrediente != null && !ingrediente.trim().isEmpty())
+            .collect(Collectors.toList());
+
+    
+    String whereClause = ingredientesFiltrados.stream()
+            .map(ingrediente -> "detalle LIKE ?")
+            .collect(Collectors.joining(" OR "));
+    
+    sql.append(whereClause);
+
+    try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
         
-        try(PreparedStatement ps = connection.prepareStatement(sql)){
-            ps.setInt(1, calorias);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Comida comida = new Comida();
-                comida.setCodComida(rs.getInt("codComida"));
-                comida.setNombre(rs.getString("nombre"));
-                comida.setTipoComida(rs.getString("tipoDeComida"));
-                comida.setDetalle(rs.getString("detalle"));
-                comida.setCaloriasPor100g(rs.getInt("caloriaspor100grms"));
-                comida.setBaja(rs.getBoolean("baja"));
-                comidas.add(comida);
-            }
-            
-        }catch(SQLException e){
-            System.out.println("Error al listar comidas: " + e.getMessage());
+        for (int i = 0; i < ingredientesFiltrados.size(); i++) {
+            ps.setString(i + 1, "%" + ingredientesFiltrados.get(i) + "%");  
         }
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Comida comida = new Comida();  
+
+            
+            comida.setCodComida(rs.getInt("codComida"));
+            comida.setNombre(rs.getString("nombre"));
+            comida.setTipoComida(TipoComida.valueOf(rs.getString("tipoDeComida").toUpperCase()));  
+            comida.setDetalle(rs.getString("detalle"));
+            comida.setCaloriasPor100g(rs.getInt("caloriaspor100grms"));
+            comida.setBaja(rs.getBoolean("baja"));
+
+            comidas.add(comida);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al filtrar por ingredientes: " + e.getMessage());
+    }
+
+    return comidas;
+}
+ 
+    
+ 
+ 
+    public List<Comida> filtrarPorCalorias(int maxCalorias) {
+        List<Comida> comidas = new ArrayList<>();
+        String sql = "SELECT * FROM comida WHERE caloriaspor100grms <= ?";  
+
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, maxCalorias);  
+
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            
+            Comida comida = new Comida();
+
+            
+            comida.setCodComida(rs.getInt("codComida"));
+            comida.setNombre(rs.getString("nombre"));
+            comida.setTipoComida(TipoComida.valueOf(rs.getString("tipoDeComida").toUpperCase()));  
+            comida.setDetalle(rs.getString("detalle"));
+            comida.setCaloriasPor100g(rs.getInt("caloriaspor100grms"));  
+            comida.setBaja(rs.getBoolean("baja"));
+
+            
+            comidas.add(comida);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al filtrar por calorías: " + e.getMessage());
+    }
+
+    return comidas;
+    }
+
+
+    
+    public List<Comida> obtenerTodasLasComidas() {
+        List<Comida> comidas = new ArrayList<>();
+        
+        
+        comidas.add(new Comida("Arroz con pollo", TipoComida.ALMUERZO, "Arroz, Pollo, Aceite", 250, true));
+        comidas.add(new Comida("Ensalada de tomate", TipoComida.ALMUERZO, "Tomate, Aceite, Sal", 50, true));
+        
         
         return comidas;
     }
-    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
     public List<Comida> filtrarPorIngrediente(String ingrediente) {
     List<Comida> comidas = new ArrayList<>();
     String sql = "SELECT * FROM comida WHERE detalle LIKE ?";
@@ -193,7 +313,4 @@ public class ComidaData {
 //        return false;
 //    }
 }
-
-
-
-
+*/

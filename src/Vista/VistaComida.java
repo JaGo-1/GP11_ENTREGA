@@ -1,13 +1,16 @@
 package Vista;
 
 import Modelo.Comida;
+import Modelo.TipoComida;
 import Persistencia.ComidaData;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -419,14 +422,40 @@ public class VistaComida extends javax.swing.JInternalFrame {
         filtroIngredientes_textField.setEnabled(true);
         
         filtroIngredientes_textField.addActionListener(e -> {
-            try {
-                String ingrediente = filtroIngredientes_textField.getText();
-                List<Comida> comidas = cd.filtrarPorIngrediente(ingrediente);
-                llenarTabla(comidas);
-            } catch (NumberFormatException ex) {
-                System.out.println("Por favor, ingrese un ingrediente válido.");
-            }
-        });
+            
+         try {
+        // Obtener los ingredientes desde el campo de texto
+        String ingredientesText = filtroIngredientes_textField.getText();
+        
+        // Verificar que el campo no esté vacío
+        if (ingredientesText.isEmpty()) {
+            System.out.println("Por favor, ingrese al menos un ingrediente.");
+            return; // Si está vacío, salimos sin hacer nada
+        }
+
+        // Separar los ingredientes por comas y eliminar espacios extra
+        List<String> ingredientes = Arrays.stream(ingredientesText.split(","))
+                                           .map(String::trim)  // Eliminar espacios en blanco antes y después
+                                           .collect(Collectors.toList());
+
+        // Llamar al método 'filtrarPorIngredientes' con la lista de ingredientes
+        List<Comida> comidas = cd.filtrarPorIngredientes(ingredientes);
+
+        // Llenar la tabla con los resultados
+        llenarTabla(comidas);
+
+    } catch (Exception ex) {
+        System.out.println("Error al filtrar ingredientes: " + ex.getMessage());
+    }
+});
+           // try {
+              //  String ingrediente = filtroIngredientes_textField.getText();
+             //   List<Comida> comidas = cd.filtrarPorIngredientes(ingrediente);
+             //   llenarTabla(comidas);
+           // } catch (NumberFormatException ex) {
+            //    System.out.println("Por favor, ingrese un ingrediente válido.");
+          //  }
+        //});
         
     }//GEN-LAST:event_filtrarIngredientes_radioActionPerformed
 
@@ -436,7 +465,54 @@ public class VistaComida extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_nuevo_btnActionPerformed
 
     private void guardar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardar_btnActionPerformed
-        try{
+                                                  
+    try {
+        String nombre = nombre_textField.getText();
+        String tipoComidaStr = tipoComida_textField.getText();  // Obtienes el texto de tipoComida
+        String detalle = detalle_textArea.getText();
+
+        if (nombre.isEmpty() || tipoComidaStr.isEmpty() || detalle.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Asegúrese de completar todos los campos");
+            return;
+        }
+
+        // Convertir tipoComidaStr a Enum TipoComida
+        TipoComida tipoComida = null;
+        try {
+            tipoComida = TipoComida.valueOf(tipoComidaStr.toUpperCase()); // Usamos toUpperCase para asegurar que el valor coincida
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, "Tipo de comida no válido. Por favor, ingrese un valor correcto.");
+            return;
+        }
+
+        int calorias = (int)calorias_spinner.getValue();
+        boolean baja = baja_radio.isSelected();
+
+        if (comidaActual == null) {
+            comidaActual = new Comida(nombre, tipoComida, detalle, calorias, baja);
+            cd.guardarComida(comidaActual);
+            JOptionPane.showMessageDialog(null, "Comida guardada");
+            resetCampos();
+        } else {
+            comidaActual.setNombre(nombre);
+            comidaActual.setTipoComida(tipoComida);  // Ahora pasamos el Enum TipoComida
+            comidaActual.setDetalle(detalle);
+            comidaActual.setCaloriasPor100g(calorias);
+            comidaActual.setBaja(baja);
+
+            cd.actualizarComida(comidaActual);
+            resetCampos();
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error al guardar la comida: " + e.getMessage());
+    }
+}
+
+        
+        
+        
+        /* try{
             String nombre = nombre_textField.getText();
             String tipoComida = tipoComida_textField.getText();
             String detalle = detalle_textArea.getText();
@@ -473,7 +549,7 @@ public class VistaComida extends javax.swing.JInternalFrame {
         }    
 
     }//GEN-LAST:event_guardar_btnActionPerformed
-
+*/
     private void borrar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrar_btnActionPerformed
         // agregar confirmacion   
         int filaSeleccionada = tablaComidas.getSelectedRow();

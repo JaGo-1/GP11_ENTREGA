@@ -3,7 +3,6 @@ package Persistencia;
 import Modelo.Dieta;
 import Modelo.Paciente;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.mariadb.jdbc.Statement;
+
 
 public class DietaData {
 
@@ -23,7 +23,7 @@ public class DietaData {
 
     public void guardarDieta(Dieta dieta) {
         String sql = "INSERT INTO dieta (nombreD, estado, totalCalorias) VALUES (?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = connection.prepareStatement((sql))) {
             ps.setString(1, dieta.getNombreD());
             ps.setBoolean(2, dieta.isEstado());
             ps.setInt(3, dieta.getTotalCalorias());

@@ -3,22 +3,25 @@ package Modelo;
 
 
 public class RenglonDeMenu {
+  
+
+    private int nroRenglon;  
+    private int codMenu;     
+    private double cantidadGrms;  
+    private int subTotalCalorias;  
+    private Comida comida;  
+
     
-    int nroRenglon;
-    Comida alimento;
-    double cantidadGrs;
-    int subtotalCalorias;
-
-    public RenglonDeMenu(int nroRenglon, Comida alimento, double cantidadGrs, int subtotalCalorias) {
+    public RenglonDeMenu(int nroRenglon, int codMenu, Comida comida, double cantidadGrms) {
         this.nroRenglon = nroRenglon;
-        this.alimento = alimento;
-        this.cantidadGrs = cantidadGrs;
-        this.subtotalCalorias = subtotalCalorias;
+        this.codMenu = codMenu;
+        this.cantidadGrms = cantidadGrms;
+        this.comida = comida;
+        
+        this.subTotalCalorias = (int) (comida.getCaloriasPor100g() * cantidadGrms / 100);  // Calorías por 100 gramos
     }
 
-    public RenglonDeMenu() {
-    }
-
+    
     public int getNroRenglon() {
         return nroRenglon;
     }
@@ -27,46 +30,35 @@ public class RenglonDeMenu {
         this.nroRenglon = nroRenglon;
     }
 
-    public Comida getAlimento() {
-        return alimento;
+    public int getCodMenu() {
+        return codMenu;
     }
 
-    public void setAlimento(Comida alimento) {
-        this.alimento = alimento;
+    public void setCodMenu(int codMenu) {
+        this.codMenu = codMenu;
     }
 
-    public double getCantidadGrs() {
-        return cantidadGrs;
+    public double getCantidadGrms() {
+        return cantidadGrms;
     }
 
-    public void setCantidadGrs(double cantidadGrs) {
-        this.cantidadGrs = cantidadGrs;
+    public void setCantidadGrms(double cantidadGrms) {
+        this.cantidadGrms = cantidadGrms;
     }
 
-    public int getSubtotalCalorias() {
-        return subtotalCalorias;
+    public int getSubTotalCalorias() {
+        return subTotalCalorias;
     }
 
-    public void setSubtotalCalorias(int subtotalCalorias) {
-        this.subtotalCalorias = subtotalCalorias;
+    public void setSubTotalCalorias(int subTotalCalorias) {
+        this.subTotalCalorias = subTotalCalorias;
     }
-    
-    //métodos 
-    
-    public void modificarRenglon(){
-        
+
+    public Comida getComida() {
+        return comida;
     }
-    
-    public void imprimirRenglon(){
-        
-    }
-    
-    public void addAlimento(Comida comida){
-        
-    }
-    
-    public int subtotalCalorias(){
-        
-        return 1;
+
+    public void setComida(Comida comida) {
+        this.comida = comida;
     }
 }

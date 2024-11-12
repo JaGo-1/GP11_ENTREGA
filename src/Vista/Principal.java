@@ -252,7 +252,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_comidas_btnActionPerformed
 
     private void menus_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menus_btnActionPerformed
-        // TODO add your handling code here:
+        abrirInternalFrame(new VistaMenu());
     }//GEN-LAST:event_menus_btnActionPerformed
 
     
