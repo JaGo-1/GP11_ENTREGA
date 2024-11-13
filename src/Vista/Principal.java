@@ -10,15 +10,16 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         
-           setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
         setResizable(false);
         
         //estilos de los botones
-        inicio_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); // top, left, bottom, right
-        pacientes_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); // top, left, bottom, right
-        dietas_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); // top, left, bottom, right
-        menus_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); // top, left, bottom, right
-        comidas_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); // top, left, bottom, right
+        inicio_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); 
+        pacientes_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); 
+        dietas_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); 
+        menus_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); 
+        comidas_btn.setBorder(new EmptyBorder(20, 20, 20, 20)); 
+        consultarMenus_btn.setBorder(new EmptyBorder(20, 20, 20, 20));
         
         cargarReportes();
         
@@ -46,13 +47,12 @@ public class Principal extends javax.swing.JFrame {
         comidas_btn = new javax.swing.JButton();
         menus_btn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        consultarMenus_btn = new javax.swing.JButton();
         gradiente2 = new Vista.componentes.gradiente();
         user = new javax.swing.JLabel();
         user_picture = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        bg.setBackground(new java.awt.Color(242, 242, 242));
 
         escritorio.setBackground(new java.awt.Color(242, 242, 242));
         escritorio.setForeground(new java.awt.Color(232, 232, 232));
@@ -132,6 +132,18 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/img/logo.png"))); // NOI18N
 
+        consultarMenus_btn.setBackground(new java.awt.Color(252, 252, 252));
+        consultarMenus_btn.setForeground(new java.awt.Color(141, 141, 141));
+        consultarMenus_btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/img/verMenus.png"))); // NOI18N
+        consultarMenus_btn.setText("     Consultar Menus");
+        consultarMenus_btn.setBorder(null);
+        consultarMenus_btn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        consultarMenus_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                consultarMenus_btnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
         panel1Layout.setHorizontalGroup(
@@ -145,13 +157,14 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addComponent(jLabel1)
                 .addContainerGap(36, Short.MAX_VALUE))
+            .addComponent(consultarMenus_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
                 .addComponent(inicio_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pacientes_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -161,7 +174,9 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(comidas_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(menus_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(159, 159, 159))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(consultarMenus_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(104, 104, 104))
         );
 
         user.setForeground(new java.awt.Color(255, 255, 255));
@@ -255,26 +270,25 @@ public class Principal extends javax.swing.JFrame {
         abrirInternalFrame(new VistaMenu());
     }//GEN-LAST:event_menus_btnActionPerformed
 
+    private void consultarMenus_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarMenus_btnActionPerformed
+        abrirInternalFrame(new VistaVerMenusDiarios());
+    }//GEN-LAST:event_consultarMenus_btnActionPerformed
+
     
      private void cargarReportes() {
-        // Crea la instancia del JInternalFrame
         Reportes reporteFrame = new Reportes();
 
-        // Configura el tamaño del JInternalFrame para que ocupe todo el JDesktopPane
         reporteFrame.setSize(escritorio.getWidth(), escritorio.getHeight());
         reporteFrame.setLocation(0, 0);
 
-        // Desactiva los bordes y la barra de título del JInternalFrame
         reporteFrame.setBorder(null);
         reporteFrame.setClosable(false);
         reporteFrame.setMaximizable(false);
         reporteFrame.setIconifiable(false);
         reporteFrame.setResizable(false);
 
-        // Agrega el JInternalFrame al desktopPane
         escritorio.add(reporteFrame);
 
-        // Asegúrate de que el JInternalFrame sea visible y maximizado
         reporteFrame.setVisible(true);
 
         // Maximiza el JInternalFrame para que ocupe el tamaño completo del JDesktopPane
@@ -297,9 +311,9 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;
     private javax.swing.JButton comidas_btn;
+    private javax.swing.JButton consultarMenus_btn;
     private javax.swing.JButton dietas_btn;
     private javax.swing.JDesktopPane escritorio;
-    private javax.swing.JDesktopPane escritorio1;
     private Vista.componentes.gradiente gradiente2;
     private javax.swing.JButton inicio_btn;
     private javax.swing.JLabel jLabel1;

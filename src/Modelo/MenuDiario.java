@@ -4,10 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuDiario {
-private int codMenu;  
+    private int codMenu;  
     private List<RenglonDeMenu> renglones;  
-    private int caloriasDelMenu;  
-
+    private int caloriasDelMenu;
+    private int diaNro;
+    private boolean estado;
+    private Dieta dieta;
+    
+    
+    public MenuDiario(int diaNro, List<RenglonDeMenu> comidas, boolean estado, Dieta dieta) {
+        this.diaNro = diaNro;
+        this.renglones = comidas;
+        this.estado = estado;
+        this.dieta = dieta;
+    }
     
     public MenuDiario(int codMenu, List<RenglonDeMenu> renglones) {
         this.codMenu = codMenu;
@@ -43,4 +53,30 @@ private int codMenu;
     public void setCaloriasDelMenu(int caloriasDelMenu) {
         this.caloriasDelMenu = caloriasDelMenu;
     }
+
+    public int getDiaNro() {
+        return diaNro;
+    }
+
+    public void setDiaNro(int diaNro) {
+        this.diaNro = diaNro;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
+    public Dieta getDieta() {
+        return dieta;
+    }
+
+    public void setDieta(Dieta dieta) {
+        this.dieta = dieta;
+    }
+    
+    
 }

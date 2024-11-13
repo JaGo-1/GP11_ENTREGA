@@ -11,6 +11,8 @@ public class RenglonDeMenu {
     private int subTotalCalorias;  
     private Comida comida;  
 
+    public RenglonDeMenu() {
+    }
     
     public RenglonDeMenu(int nroRenglon, int codMenu, Comida comida, double cantidadGrms) {
         this.nroRenglon = nroRenglon;

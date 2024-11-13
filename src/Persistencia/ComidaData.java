@@ -88,7 +88,7 @@ public class ComidaData {
                 comida.setCodComida(rs.getInt("codComida"));
                 comida.setNombre(rs.getString("nombre"));
                 
-                comida.setTipoComida(TipoComida.valueOf(rs.getString("tipoDeComida").toUpperCase()));  // Asegúrate de que el nombre en la base de datos esté en mayúsculas
+                comida.setTipoComida(TipoComida.valueOf(rs.getString("tipoDeComida").toUpperCase()));  
                 comida.setCaloriasPor100g(rs.getInt("caloriasPor100grms"));
                 comida.setDetalle(rs.getString("detalle"));
                 comida.setBaja(rs.getBoolean("baja"));
@@ -126,7 +126,7 @@ public class ComidaData {
                 comida.setCodComida(rs.getInt("codComida"));
                 comida.setNombre(rs.getString("nombre"));
                 
-                comida.setTipoComida(TipoComida.valueOf(rs.getString("tipoDeComida").toUpperCase()));  // Convertir el String a Enum
+                comida.setTipoComida(TipoComida.valueOf(rs.getString("tipoDeComida").toUpperCase()));  
                 comida.setDetalle(rs.getString("detalle"));
                 comida.setCaloriasPor100g(rs.getInt("caloriasPor100grms"));
                 comida.setBaja(rs.getBoolean("baja"));

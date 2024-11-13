@@ -161,7 +161,7 @@ public class VistaDieta extends javax.swing.JInternalFrame {
             }
         });
 
-        buscar_jButton.setText("Buscar");
+        buscar_jButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/img/buscar.png"))); // NOI18N
         buscar_jButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buscar_jButtonActionPerformed(evt);

@@ -190,7 +190,7 @@ public List<MenuDiario> listarMenusDiarios() {
         PreparedStatement ps = connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            MenuDiario menu = new MenuDiario(rs.getInt("codMenu"), new ArrayList<>());  // Instanciamos con codMenu
+            MenuDiario menu = new MenuDiario(rs.getInt("codMenu"), new ArrayList<>()); 
             
             List<RenglonDeMenu> renglones = buscarRenglonesDeMenu(menu.getCodMenu());
             menu.setRenglones(renglones);
@@ -205,8 +205,6 @@ public List<MenuDiario> listarMenusDiarios() {
     return menus;
 }
 
-
-    
     
     
 public List<MenuDiario> filtrarMenusPorIngrediente(String ingrediente) {
@@ -254,4 +252,40 @@ public List<MenuDiario> filtrarMenusPorIngrediente(String ingrediente) {
 private int calcularCalorias(RenglonDeMenu renglon) {
     return (int) (renglon.getCantidadGrms() * renglon.getComida().getCaloriasPor100g() / 100);
 }
+
+    //VISTA VER MENUS DIARIOS
+    
+    public List<MenuDiario> obtenerMenuDiariosPorDieta(int codDieta, int n) {
+        List<MenuDiario> menuDiarios = new ArrayList<>();
+        
+        String sql = "SELECT * FROM menudiario WHERE CodDieta = ? AND diaNro = ?";
+    
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, codDieta);
+            ps.setInt(2, n); 
+        
+            ResultSet rs = ps.executeQuery();
+        
+            while (rs.next()) {
+                MenuDiario menuDiario = new MenuDiario();
+                menuDiario.setCodMenu(rs.getInt("codMenu"));
+                menuDiario.setDiaNro(rs.getInt("diaNro"));
+                menuDiario.setEstado(rs.getBoolean("estado"));
+            
+                RenglonDeMenuData rd = new RenglonDeMenuData();
+                List<RenglonDeMenu> renglones = rd.obtenerRenglonesDeMenu(menuDiario.getCodMenu());
+                menuDiario.setRenglones(renglones);
+            
+                menuDiarios.add(menuDiario);
+            }
+        } catch (SQLException e) {
+        System.out.println("Error al listar menús diarios: " + e.getMessage());
+        }
+        
+        System.out.println("Cantidad de menús recuperados: " + menuDiarios.size());
+        return menuDiarios;
+    }
+
+
+    
 }

@@ -50,7 +50,7 @@ public class Reportes extends javax.swing.JInternalFrame {
                     Paciente p = pacientesTotales.get(index);
 
                     // Recargar dieta desde la base de datos
-                    Dieta dieta = dd.cargarDietaDesdeBaseDatos(p.getNroPaciente()); // Método para recargar la dieta desde la base de datos
+                    Dieta dieta = dd.cargarDietaDesdeBaseDatos(p.getNroPaciente()); 
 
                     if (dieta != null) {
                         long totalDias = dieta.getTotalDias();

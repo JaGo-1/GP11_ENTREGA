@@ -134,4 +134,34 @@ public List<RenglonDeMenu> listarRenglonesDeMenu() {
     }
     return renglones;
 }
+
+    public List<RenglonDeMenu> obtenerRenglonesDeMenu(int codMenu) {
+        List<RenglonDeMenu> renglones = new ArrayList<>();
+        
+        String sql = "SELECT * FROM renglondemenu WHERE codMenu = ? LIMIT 5";
+        
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+             
+            stmt.setInt(1, codMenu);
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                RenglonDeMenu renglon = new RenglonDeMenu();
+                renglon.setNroRenglon(rs.getInt("nroRenglon"));
+                renglon.setCantidadGrms(rs.getDouble("cantidadGrms"));
+                renglon.setSubTotalCalorias(rs.getInt("subTotalCalorias"));
+                
+                ComidaData cd = new ComidaData();
+                Comida comida = cd.buscarComida(rs.getInt("codComida"));
+                renglon.setComida(comida);
+                
+                renglones.add(renglon);
+            }
+        }catch (SQLException e) {
+            System.out.println("Error al listar renglones de menu: " + e.getMessage());
+        }
+        return renglones;
+    }
+
+
 }
