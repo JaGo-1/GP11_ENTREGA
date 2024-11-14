@@ -267,7 +267,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_comidas_btnActionPerformed
 
     private void menus_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menus_btnActionPerformed
-        abrirInternalFrame(new VistaMenu());
+        abrirInternalFrame(new VistaGenerarMenu());
     }//GEN-LAST:event_menus_btnActionPerformed
 
     private void consultarMenus_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarMenus_btnActionPerformed

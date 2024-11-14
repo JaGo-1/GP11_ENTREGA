@@ -237,6 +237,8 @@ public class VistaVerMenusDiarios extends javax.swing.JInternalFrame {
     private javax.swing.JLabel total_calorias;
     // End of variables declaration//GEN-END:variables
      
+    
+    
     private int sumarCalorias (List<MenuDiario> m){
         int contador = 0;
         for (MenuDiario menu : m){
@@ -250,7 +252,7 @@ public class VistaVerMenusDiarios extends javax.swing.JInternalFrame {
    
     private void llenarTablaConMenus(List<MenuDiario> menusGenerados) {
         tableModel.setRowCount(0);
-        for (MenuDiario menuDiario : menuDiarios) {
+        for (MenuDiario menuDiario : menusGenerados) {
             int contador = 1;
              
             for (RenglonDeMenu renglon : menuDiario.getRenglones()) {

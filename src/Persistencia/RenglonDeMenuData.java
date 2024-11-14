@@ -20,7 +20,7 @@ public class RenglonDeMenuData {
     }
 
 public void guardarRenglonDeMenu(RenglonDeMenu renglon) {
-    String sql = "INSERT INTO renglonDeMenu (codComida, cantidadGrs, subtotalCalorias, codMenu) VALUES (?, ?, ?, ?)";
+    String sql = "INSERT INTO renglondemenu (codComida, cantidadGrs, subTotalCalorias, codMenu) VALUES (?, ?, ?, ?)";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
         
         ps.setInt(1, renglon.getComida().getCodComida());  
@@ -36,7 +36,7 @@ public void guardarRenglonDeMenu(RenglonDeMenu renglon) {
 
 
 public void actualizarRenglonDeMenu(RenglonDeMenu renglon) {
-    String sql = "UPDATE renglonDeMenu SET codComida = ?, cantidadGrs = ?, subtotalCalorias = ?, codMenu = ? WHERE nroRenglon = ?";
+    String sql = "UPDATE renglondemenu SET codComida = ?, cantidadGrms = ?, subTotalCalorias = ?, codMenu = ? WHERE nroRenglon = ?";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
         ps.setInt(1, renglon.getComida().getCodComida());
         ps.setDouble(2, renglon.getCantidadGrms());  
@@ -52,7 +52,7 @@ public void actualizarRenglonDeMenu(RenglonDeMenu renglon) {
 
   public RenglonDeMenu buscarRenglonDeMenu(int nroRenglon) {
     RenglonDeMenu renglon = null;
-    String sql = "SELECT * FROM renglonDeMenu WHERE nroRenglon = ?";
+    String sql = "SELECT * FROM renglondemenu WHERE nroRenglon = ?";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
         ps.setInt(1, nroRenglon);
         ResultSet rs = ps.executeQuery();
@@ -76,7 +76,7 @@ public void actualizarRenglonDeMenu(RenglonDeMenu renglon) {
 
 
  public void borrarRenglonDeMenu(int nroRenglon) {
-    String sql = "DELETE FROM renglonDeMenu WHERE nroRenglon = ?";
+    String sql = "DELETE FROM renglondemenu WHERE nroRenglon = ?";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
         ps.setInt(1, nroRenglon);
         ps.executeUpdate();
@@ -113,7 +113,7 @@ public void actualizarRenglonDeMenu(RenglonDeMenu renglon) {
 
 public List<RenglonDeMenu> listarRenglonesDeMenu() {
     List<RenglonDeMenu> renglones = new ArrayList<>();
-    String sql = "SELECT * FROM renglonDeMenu";
+    String sql = "SELECT * FROM renglondemenu";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
@@ -134,7 +134,7 @@ public List<RenglonDeMenu> listarRenglonesDeMenu() {
     }
     return renglones;
 }
-
+/*
     public List<RenglonDeMenu> obtenerRenglonesDeMenu(int codMenu) {
         List<RenglonDeMenu> renglones = new ArrayList<>();
         
@@ -164,4 +164,48 @@ public List<RenglonDeMenu> listarRenglonesDeMenu() {
     }
 
 
+}
+*/
+public List<RenglonDeMenu> obtenerRenglonesDeMenu(int codMenu) {
+    List<RenglonDeMenu> renglones = new ArrayList<>();
+    
+    // Mensaje de depuración para saber qué codMenu estás consultando
+    System.out.println("Recuperando renglones para el menú con codMenu: " + codMenu);
+    
+    // Consulta sin LIMIT
+    String sql = "SELECT * FROM renglondemenu WHERE codMenu = ?";
+    
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setInt(1, codMenu);
+        ResultSet rs = stmt.executeQuery();
+        
+        // Verificar cuántos renglones son devueltos por la consulta
+        int count = 0; // Contador de renglones recuperados
+        while (rs.next()) {
+            RenglonDeMenu renglon = new RenglonDeMenu();
+            renglon.setNroRenglon(rs.getInt("nroRenglon"));
+            renglon.setCantidadGrms(rs.getDouble("cantidadGrms"));
+            renglon.setSubTotalCalorias(rs.getInt("subTotalCalorias"));
+            
+            // Recuperar la comida asociada
+            ComidaData cd = new ComidaData();
+            Comida comida = cd.buscarComida(rs.getInt("codComida"));
+            renglon.setComida(comida);
+            
+            // Agregar el renglón a la lista
+            renglones.add(renglon);
+            count++; // Incrementar el contador de renglones
+        }
+
+        // Mensaje de depuración con el número de renglones recuperados
+        System.out.println("Cantidad de renglones recuperados para codMenu " + codMenu + ": " + count);
+        
+    } catch (SQLException e) {
+        System.out.println("Error al listar renglones de menu: " + e.getMessage());
+    }
+
+    // Mensaje de depuración para verificar cuántos renglones están en la lista final
+    System.out.println("Total de renglones recuperados: " + renglones.size());
+    return renglones;
+}
 }

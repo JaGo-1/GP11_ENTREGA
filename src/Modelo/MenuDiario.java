@@ -62,7 +62,7 @@ public class MenuDiario {
         this.diaNro = diaNro;
     }
 
-    public boolean isEstado() {
+    public boolean getEstado() {
         return estado;
     }
 
@@ -79,4 +79,10 @@ public class MenuDiario {
     }
     
     
+@Override
+public String toString() {
+    return "Menú del Día " + diaNro + " - Calorías: " + caloriasDelMenu;
+}
+
+
 }

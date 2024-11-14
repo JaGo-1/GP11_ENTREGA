@@ -6,6 +6,7 @@ import Modelo.RenglonDeMenu;
 import Modelo.Dieta;
 import Modelo.TipoComida;
 import Persistencia.Conexion;
+import Persistencia.RenglonDeMenuData;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,48 +22,13 @@ public class MenuDiarioData {
         this.connection = Conexion.getConexion();
     }
 
-    
-    
-    
-    
-    
-    
-  public void guardarMenuDiario(MenuDiario menu) {
-    String sqlMenu = "INSERT INTO menu_diario (codMenu) VALUES (?)";
-    try {
-        
-        PreparedStatement psMenu = connection.prepareStatement(sqlMenu, Statement.RETURN_GENERATED_KEYS);
-        psMenu.setInt(1, menu.getCodMenu());  
-
-        psMenu.executeUpdate();
-
-        
-        ResultSet rsMenu = psMenu.getGeneratedKeys();
-        if (rsMenu.next()) {
-            int codMenu = rsMenu.getInt(1);
-            menu.setCodMenu(codMenu);  
-
-            
-            for (RenglonDeMenu renglon : menu.getRenglones()) {
-                guardarRenglonDeMenu(renglon, codMenu);  
-            }
-        }
-        psMenu.close();
-
-    } catch (SQLException e) {
-        System.out.println("Error al guardar menú diario: " + e.getMessage());
-    }
-}
-  
-  
-  
-  
+ 
   
   
   
 private void guardarRenglonDeMenu(RenglonDeMenu renglon, int codMenu) {
     
-    String sqlRenglon = "INSERT INTO renglon_menu (codMenu, cantidadGrms, subTotalCalorias, codComida) VALUES (?, ?, ?, ?)";
+    String sqlRenglon = "INSERT INTO renglondemenu (codMenu, cantidadGrms, subTotalCalorias, codComida) VALUES (?, ?, ?, ?)";
 
     try (PreparedStatement psRenglon = connection.prepareStatement(sqlRenglon)) {
         // Setear los parámetros para la sentencia SQL
@@ -86,7 +52,7 @@ private void guardarRenglonDeMenu(RenglonDeMenu renglon, int codMenu) {
 
 public MenuDiario buscarMenuDiario(int codMenu) {
     MenuDiario menu = null;
-    String sqlMenu = "SELECT * FROM menu_diario WHERE codMenu = ?";
+    String sqlMenu = "SELECT * FROM menudiario WHERE codMenu = ?";
     try {
         PreparedStatement psMenu = connection.prepareStatement(sqlMenu);
         psMenu.setInt(1, codMenu);
@@ -113,25 +79,19 @@ public MenuDiario buscarMenuDiario(int codMenu) {
     // Buscar los renglones de menú asociados a un menú
    private List<RenglonDeMenu> buscarRenglonesDeMenu(int codMenu) {
     List<RenglonDeMenu> renglones = new ArrayList<>();
-    String sqlRenglon = "SELECT * FROM renglon_menu WHERE codMenu = ?";
+    String sqlRenglon = "SELECT * FROM renglondemenu WHERE codMenu = ?";
     try (PreparedStatement psRenglon = connection.prepareStatement(sqlRenglon)) {
         psRenglon.setInt(1, codMenu);
         ResultSet rsRenglon = psRenglon.executeQuery();
         while (rsRenglon.next()) {
-            // Buscar la comida asociada al renglón
             Comida comida = buscarComida(rsRenglon.getInt("codComida"));
-
-            // Crear un nuevo RenglonDeMenu con los datos obtenidos de la base de datos
             RenglonDeMenu renglon = new RenglonDeMenu(
-                rsRenglon.getInt("nroRenglon"),  // Número de renglón
-                codMenu,  // Pasar el codMenu aquí
+                rsRenglon.getInt("nroRenglon"),  
+                codMenu,  
                 comida, 
-                rsRenglon.getDouble("cantidadGrms")  // Cantidad en gramos
+                rsRenglon.getDouble("cantidadGrms")
             );
-
             renglon.setSubTotalCalorias(rsRenglon.getInt("subTotalCalorias"));
-
-            
             renglones.add(renglon);
         }
         rsRenglon.close();
@@ -140,6 +100,7 @@ public MenuDiario buscarMenuDiario(int codMenu) {
     }
     return renglones;
 }
+
 
 
 
@@ -170,7 +131,7 @@ public MenuDiario buscarMenuDiario(int codMenu) {
             }
 
             comida.setCaloriasPor100g(rsComida.getInt("caloriaspor100grms"));
-            comida.setDetalle(rsComida.getString("detalles"));
+            comida.setDetalle(rsComida.getString("detalle"));
             comida.setBaja(rsComida.getBoolean("baja"));
         }
         
@@ -185,7 +146,7 @@ public MenuDiario buscarMenuDiario(int codMenu) {
 
 public List<MenuDiario> listarMenusDiarios() {
     List<MenuDiario> menus = new ArrayList<>();
-    String sql = "SELECT * FROM menu_diario";
+    String sql = "SELECT * FROM menudiario";
     try {
         PreparedStatement ps = connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
@@ -205,11 +166,17 @@ public List<MenuDiario> listarMenusDiarios() {
     return menus;
 }
 
+
+    
+  
+  
     
     
-public List<MenuDiario> filtrarMenusPorIngrediente(String ingrediente) {
+
+
+    public List<MenuDiario> filtrarMenusPorIngrediente(String ingrediente) {
     List<MenuDiario> menus = new ArrayList<>();
-    String sql = "SELECT * FROM menu_diario WHERE detalles LIKE ?";
+    String sql = "SELECT * FROM menudiario WHERE detalles LIKE ?";
     try {
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setString(1, "%" + ingrediente + "%");
@@ -231,38 +198,108 @@ public List<MenuDiario> filtrarMenusPorIngrediente(String ingrediente) {
 }
     
     
+        
     
-  public MenuDiario generarMenuDiario(List<Comida> ingredientesSeleccionados) {
+    
+    
+    
+    
+// Guardar un nuevo MenuDiario
+ public void guardar(MenuDiario menu) {
+    
+    String sql = "INSERT INTO menudiario (diaNro, caloriasDelMenu, estado, CodDieta) VALUES (?, ?, ?, ?)";
+
+    try (PreparedStatement pst = connection.prepareStatement(sql)) {
+        
+        
+        if (menu.getDieta() == null) {
+            throw new Exception("La dieta no está seleccionada.");
+        }
+
+        
+        pst.setInt(1, menu.getDiaNro());  
+        pst.setInt(2, calcularCaloriasDelMenu(menu));  
+        pst.setBoolean(3, menu.getEstado());  
+        pst.setInt(4, menu.getDieta().getCodDieta());  
+
+        // Ejecutamos la consulta
+        pst.executeUpdate();
+        System.out.println("Menú guardado exitosamente.");
+
+    } catch (SQLException ex) {
+        ex.printStackTrace();  
+    } catch (Exception e) {
+        e.printStackTrace();  
+    }
+}
+
+
+    
+    
+    
+    // Método para calcular las calorías totales de un menú
+    private int calcularCaloriasDelMenu(MenuDiario menu) {
+        int totalCalorias = 0;
+        for (RenglonDeMenu renglon : menu.getRenglones()) {
+            totalCalorias += renglon.getSubTotalCalorias(); // Asumiendo que el subtotal de calorías ya está calculado
+        }
+        return totalCalorias;
+    }
+
+  
+    
+    
+  
+    
+    
+    
+    // Generar un menú diario
+    public MenuDiario generarMenuDiario(List<Comida> ingredientesSeleccionados, int diaNro) {
     List<RenglonDeMenu> renglones = new ArrayList<>();
-    int diaNro = 1;  
-    int codMenu = diaNro;
+
+    
+    int codMenu = 0;  
 
     for (int i = 0; i < 5; i++) {
         Comida comida = ingredientesSeleccionados.get(i % ingredientesSeleccionados.size());
         double cantidadGrms = 100 + (i * 50);
-        
+
         RenglonDeMenu renglon = new RenglonDeMenu(i + 1, codMenu, comida, cantidadGrms);
-        renglon.setSubTotalCalorias(calcularCalorias(renglon));  
+        renglon.setSubTotalCalorias(calcularCalorias(renglon));
         renglones.add(renglon);
     }
 
+   
     return new MenuDiario(diaNro, renglones);
 }
 
-private int calcularCalorias(RenglonDeMenu renglon) {
-    return (int) (renglon.getCantidadGrms() * renglon.getComida().getCaloriasPor100g() / 100);
-}
 
-    //VISTA VER MENUS DIARIOS
     
-    public List<MenuDiario> obtenerMenuDiariosPorDieta(int codDieta, int n) {
+    
+    
+    
+    // Calcular las calorías de un renglón de menú
+    private int calcularCalorias(RenglonDeMenu renglon) {
+        return (int) (renglon.getCantidadGrms() * renglon.getComida().getCaloriasPor100g() / 100);
+    }
+    
+        
+    
+    
+    
+    
+    
+      //VISTA VER MENUS DIARIOS
+    
+     /* public List<MenuDiario> obtenerMenuDiariosPorDieta( int n , int codDieta) {
         List<MenuDiario> menuDiarios = new ArrayList<>();
         
-        String sql = "SELECT * FROM menudiario WHERE CodDieta = ? AND diaNro = ?";
+        String sql = "SELECT * FROM menudiario WHERE  diaNro = ?  AND CodDieta = ? ";
     
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, codDieta);
-            ps.setInt(2, n); 
+            
+          ps.setInt(2, n); 
+          ps.setInt(1, codDieta);
         
             ResultSet rs = ps.executeQuery();
         
@@ -270,7 +307,7 @@ private int calcularCalorias(RenglonDeMenu renglon) {
                 MenuDiario menuDiario = new MenuDiario();
                 menuDiario.setCodMenu(rs.getInt("codMenu"));
                 menuDiario.setDiaNro(rs.getInt("diaNro"));
-                menuDiario.setEstado(rs.getBoolean("estado"));
+                menuDiario.getDieta(rs.getInt("codDieta"));
             
                 RenglonDeMenuData rd = new RenglonDeMenuData();
                 List<RenglonDeMenu> renglones = rd.obtenerRenglonesDeMenu(menuDiario.getCodMenu());
@@ -285,7 +322,61 @@ private int calcularCalorias(RenglonDeMenu renglon) {
         System.out.println("Cantidad de menús recuperados: " + menuDiarios.size());
         return menuDiarios;
     }
+}
+*/
+  public List<MenuDiario> obtenerMenuDiariosPorDieta(int codDieta, int diaNro) {
+    List<MenuDiario> menuDiarios = new ArrayList<>();
+    System.out.println("Conectado a la base de datos, ejecutando consulta...");
+
+    String sql = "SELECT * FROM menudiario WHERE diaNro = ? AND CodDieta = ?";
+    System.out.println("Ejecutando SQL: " + sql);
+    System.out.println("Parametros: diaNro=" + diaNro + ", CodDieta=" + codDieta);
+
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        // Cambiar el orden de los parámetros
+        ps.setInt(1, diaNro);  // El primer parámetro corresponde a diaNro
+        ps.setInt(2, codDieta); // El segundo parámetro corresponde a CodDieta
+
+        ResultSet rs = ps.executeQuery();
+        
+        // Si no se encuentran resultados, imprímelo para depuración
+        if (!rs.isBeforeFirst()) {
+            System.out.println("No se encontraron menús para los parámetros dados.");
+        }
+
+        while (rs.next()) {
+            MenuDiario menuDiario = new MenuDiario();
+            menuDiario.setCodMenu(rs.getInt("codMenu"));
+            menuDiario.setDiaNro(rs.getInt("diaNro"));
+
+            // Recuperar el objeto Dieta asociado (asegúrate que 'setDieta' esté disponible en MenuDiario)
+            Dieta dieta = new Dieta();
+            dieta.setCodDieta(rs.getInt("codDieta"));
+            menuDiario.setDieta(dieta); // Si tienes un setter para dieta en MenuDiario
+
+            // Recuperar los renglones del menú utilizando el código del menú
+            RenglonDeMenuData rd = new RenglonDeMenuData();
+            List<RenglonDeMenu> renglones = rd.obtenerRenglonesDeMenu(menuDiario.getCodMenu());
+            menuDiario.setRenglones(renglones);
+
+            menuDiarios.add(menuDiario);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al listar menús diarios: " + e.getMessage());
+    }
+
+    System.out.println("Cantidad de menús recuperados: " + menuDiarios.size());
+    return menuDiarios;
+}
+
+}
+    
+    
 
 
     
-}
+    
+    
+    
+    
+   
