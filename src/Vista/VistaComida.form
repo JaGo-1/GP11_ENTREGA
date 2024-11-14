@@ -115,8 +115,6 @@
                           <Group type="102" attributes="0">
                               <Component id="verTodo_radio" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="nuevo_btn" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="borrar_btn" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jScrollPane1" min="-2" pref="495" max="-2" attributes="0"/>
@@ -129,13 +127,10 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="0" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="324" max="32767" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="borrar_btn" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="nuevo_btn" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="borrar_btn" min="-2" max="-2" attributes="0"/>
                           <Component id="verTodo_radio" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
@@ -166,14 +161,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="borrar_btnActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JButton" name="nuevo_btn">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Nuevo"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nuevo_btnActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JRadioButton" name="verTodo_radio">
@@ -266,18 +253,21 @@
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="baja_radio" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                              <Component id="guardar_btn" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="calorias_text" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
-                                  <Component id="detalle_text" min="-2" max="-2" attributes="0"/>
-                                  <Component id="tipoComida_textField" pref="186" max="32767" attributes="0"/>
-                                  <Component id="tipoComida_text" min="-2" max="-2" attributes="0"/>
-                                  <Component id="nombre_textField" max="32767" attributes="0"/>
-                                  <Component id="nombre_text" min="-2" max="-2" attributes="0"/>
-                                  <Component id="calorias_spinner" alignment="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
+                                  <Component id="nuevo_btn" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="guardar_btn" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="calorias_text" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jScrollPane2" alignment="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="detalle_text" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="tipoComida_textField" alignment="0" pref="186" max="32767" attributes="0"/>
+                              <Component id="tipoComida_text" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="nombre_textField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="nombre_text" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="calorias_spinner" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace pref="19" max="32767" attributes="0"/>
@@ -306,7 +296,10 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="baja_radio" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="guardar_btn" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="guardar_btn" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="nuevo_btn" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -358,9 +351,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Baja"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="baja_radioActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="guardar_btn">
               <Properties>
@@ -368,6 +358,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="guardar_btnActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="nuevo_btn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Limpiar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nuevo_btnActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

@@ -207,14 +207,20 @@ public class GenerarPaciente extends javax.swing.JInternalFrame {
 
     private void jRtodopacientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRtodopacientesActionPerformed
         cargarPacientes("todos");
+        jRpacientealta.setSelected(false);
+        jRpacientebaja.setSelected(false);
     }//GEN-LAST:event_jRtodopacientesActionPerformed
 
     private void jRpacientealtaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRpacientealtaActionPerformed
         cargarPacientes("altas");
+        jRtodopacientes.setSelected(false);
+        jRpacientebaja.setSelected(false);
     }//GEN-LAST:event_jRpacientealtaActionPerformed
 
     private void jRpacientebajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRpacientebajaActionPerformed
         cargarPacientes("bajas");
+        jRtodopacientes.setSelected(false);
+        jRpacientealta.setSelected(false);
     }//GEN-LAST:event_jRpacientebajaActionPerformed
 
     private void jBborrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBborrarActionPerformed
@@ -230,35 +236,111 @@ public class GenerarPaciente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBborrarActionPerformed
 
     private void jBactualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBactualizarActionPerformed
-int filaSeleccionada = jTpaciente.getSelectedRow();
+
+        int filaSeleccionada = jTpaciente.getSelectedRow();
         if (filaSeleccionada != -1) {
             int nroPaciente = (Integer) tableModel.getValueAt(filaSeleccionada, 0);
             Paciente paciente = pacienteData.buscarPaciente(nroPaciente);
 
-            // Mostrar formulario de actualización
-            paciente.setNombre(JOptionPane.showInputDialog("Ingrese el nombre:", paciente.getNombre()));
-            paciente.setEdad(Integer.parseInt(JOptionPane.showInputDialog("Ingrese la edad:", paciente.getEdad())));
-            paciente.setAltura(Float.parseFloat(JOptionPane.showInputDialog("Ingrese la altura:", paciente.getAltura())));
-            paciente.setPesoActual(Float.parseFloat(JOptionPane.showInputDialog("Ingrese el peso actual:", paciente.getPesoActual())));
-            paciente.setPesoBuscado(Float.parseFloat(JOptionPane.showInputDialog("Ingrese el peso buscado:", paciente.getPesoBuscado())));
-            
+        
+            String nombre = JOptionPane.showInputDialog("Ingrese el nombre:", paciente.getNombre());
+            if (nombre == null) return; // Si el usuario cancela, se detiene el proceso
+            paciente.setNombre(nombre);
+        
+            String edadStr = JOptionPane.showInputDialog("Ingrese la edad:", paciente.getEdad());
+            if (edadStr == null) return;
+            try {
+                paciente.setEdad(Integer.parseInt(edadStr));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "La edad debe ser un número válido.");
+                return;
+            }
+
+            String alturaStr = JOptionPane.showInputDialog("Ingrese la altura:", paciente.getAltura());
+            if (alturaStr == null) return;
+            try {
+                paciente.setAltura(Float.parseFloat(alturaStr));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "La altura debe ser un número válido.");
+                return;
+            }
+
+            String pesoActualStr = JOptionPane.showInputDialog("Ingrese el peso actual:", paciente.getPesoActual());
+            if (pesoActualStr == null) return;
+            try {
+                paciente.setPesoActual(Float.parseFloat(pesoActualStr));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "El peso actual debe ser un número válido.");
+                return;
+            }
+
+            String pesoBuscadoStr = JOptionPane.showInputDialog("Ingrese el peso buscado:", paciente.getPesoBuscado());
+            if (pesoBuscadoStr == null) return;
+            try {
+                paciente.setPesoBuscado(Float.parseFloat(pesoBuscadoStr));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "El peso buscado debe ser un número válido.");
+                return;
+            }
+
+        
             pacienteData.actualizarPaciente(paciente);
             JOptionPane.showMessageDialog(this, "Paciente actualizado.");
             cargarPacientes("todos"); 
         } else {
             JOptionPane.showMessageDialog(this, "Por favor, seleccione un paciente a actualizar.");
         }
-
     }//GEN-LAST:event_jBactualizarActionPerformed
 
     private void jBGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGuardarActionPerformed
-     Paciente paciente = new Paciente();
-        paciente.setNombre(JOptionPane.showInputDialog("Ingrese el nombre:"));
-        paciente.setEdad(Integer.parseInt(JOptionPane.showInputDialog("Ingrese la edad:")));
-        paciente.setAltura(Float.parseFloat(JOptionPane.showInputDialog("Ingrese la altura:")));
-        paciente.setPesoActual(Float.parseFloat(JOptionPane.showInputDialog("Ingrese el peso actual:")));
-        paciente.setPesoBuscado(Float.parseFloat(JOptionPane.showInputDialog("Ingrese el peso buscado:")));
+
+        Paciente paciente = new Paciente();
         
+        String nombre = JOptionPane.showInputDialog("Ingrese el nombre:");
+        if (nombre == null || nombre.trim().isEmpty()) return; // Si el usuario cancela o deja en blanco, se detiene el proceso
+        paciente.setNombre(nombre);
+    
+    
+        String edadStr = JOptionPane.showInputDialog("Ingrese la edad:");
+        if (edadStr == null) return;
+        try {
+            paciente.setEdad(Integer.parseInt(edadStr));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La edad debe ser un número válido.");
+        return;
+        }
+
+
+        String alturaStr = JOptionPane.showInputDialog("Ingrese la altura:");
+        if (alturaStr == null) return;
+        try {
+            paciente.setAltura(Float.parseFloat(alturaStr));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La altura debe ser un número válido.");
+        return;
+        }
+
+    
+        String pesoActualStr = JOptionPane.showInputDialog("Ingrese el peso actual:");
+        if (pesoActualStr == null) return;
+        try {
+            paciente.setPesoActual(Float.parseFloat(pesoActualStr));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El peso actual debe ser un número válido.");
+        return;
+        }
+
+    
+        String pesoBuscadoStr = JOptionPane.showInputDialog("Ingrese el peso buscado:");
+        if (pesoBuscadoStr == null) return;
+        try {
+            paciente.setPesoBuscado(Float.parseFloat(pesoBuscadoStr));
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El peso buscado debe ser un número válido.");
+            return;
+        }
+
+    
         pacienteData.guardarPaciente(paciente);
         JOptionPane.showMessageDialog(this, "Paciente guardado.");
         cargarPacientes("todos"); 

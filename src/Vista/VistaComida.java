@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
@@ -71,9 +70,7 @@ public class VistaComida extends javax.swing.JInternalFrame {
         tablaComidas.setModel(tabla);
     }
 
-    private void llenarCombo(JComboBox combo){
-    
-    }
+ 
     
     private void llenarTabla(List<Comida> comidas){
         tabla.setRowCount(0);
@@ -88,7 +85,7 @@ public class VistaComida extends javax.swing.JInternalFrame {
         int paso = 1;
         int valorInicial = 0; 
 
-        SpinnerNumberModel model = new SpinnerNumberModel(valorInicial, min, Integer.MAX_VALUE, paso);
+        SpinnerNumberModel model = new SpinnerNumberModel(valorInicial, min, 1000, paso);
         calorias_spinner.setModel(model);
         
         // Para permitir solo dígitos y teclas de control
@@ -98,6 +95,11 @@ public class VistaComida extends javax.swing.JInternalFrame {
             public void keyTyped(KeyEvent e) {
                 char c = e.getKeyChar();
                 if (!Character.isDigit(c) && c != KeyEvent.VK_BACK_SPACE && c != KeyEvent.VK_DELETE) {
+                    e.consume(); 
+                    return;
+                }
+                
+                if (spinnerTextField.getText().length() >= 4 && Character.isDigit(c)) {
                     e.consume(); 
                     return;
                 }
@@ -130,7 +132,6 @@ public class VistaComida extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaComidas = new javax.swing.JTable();
         borrar_btn = new javax.swing.JButton();
-        nuevo_btn = new javax.swing.JButton();
         verTodo_radio = new javax.swing.JRadioButton();
         panel2 = new Vista.componentes.Panel();
         filtrarCalorias_radio = new javax.swing.JRadioButton();
@@ -149,11 +150,10 @@ public class VistaComida extends javax.swing.JInternalFrame {
         calorias_spinner = new javax.swing.JSpinner();
         baja_radio = new javax.swing.JRadioButton();
         guardar_btn = new javax.swing.JButton();
+        nuevo_btn = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(null);
-
-        bg.setBackground(new java.awt.Color(242, 242, 242));
 
         ingresarComidas_text.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         ingresarComidas_text.setText("Ingresar Comidas");
@@ -183,13 +183,6 @@ public class VistaComida extends javax.swing.JInternalFrame {
             }
         });
 
-        nuevo_btn.setText("Nuevo");
-        nuevo_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nuevo_btnActionPerformed(evt);
-            }
-        });
-
         verTodo_radio.setText("Ver todo");
         verTodo_radio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -207,8 +200,6 @@ public class VistaComida extends javax.swing.JInternalFrame {
                     .addGroup(panel1Layout.createSequentialGroup()
                         .addComponent(verTodo_radio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(nuevo_btn)
-                        .addGap(18, 18, 18)
                         .addComponent(borrar_btn))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(25, Short.MAX_VALUE))
@@ -217,12 +208,10 @@ public class VistaComida extends javax.swing.JInternalFrame {
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(borrar_btn)
-                        .addComponent(nuevo_btn))
+                    .addComponent(borrar_btn)
                     .addComponent(verTodo_radio))
                 .addGap(33, 33, 33))
         );
@@ -288,16 +277,18 @@ public class VistaComida extends javax.swing.JInternalFrame {
         calorias_text.setText("Calorias (100gr)");
 
         baja_radio.setText("Baja");
-        baja_radio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                baja_radioActionPerformed(evt);
-            }
-        });
 
         guardar_btn.setText("Guardar");
         guardar_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 guardar_btnActionPerformed(evt);
+            }
+        });
+
+        nuevo_btn.setText("Limpiar");
+        nuevo_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nuevo_btnActionPerformed(evt);
             }
         });
 
@@ -309,17 +300,20 @@ public class VistaComida extends javax.swing.JInternalFrame {
                 .addGap(16, 16, 16)
                 .addGroup(panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(baja_radio)
-                    .addGroup(panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(guardar_btn)
-                        .addGroup(panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(calorias_text)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(detalle_text)
-                            .addComponent(tipoComida_textField, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
-                            .addComponent(tipoComida_text)
-                            .addComponent(nombre_textField)
-                            .addComponent(nombre_text)
-                            .addComponent(calorias_spinner))))
+                    .addGroup(panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(panel3Layout.createSequentialGroup()
+                            .addGap(21, 21, 21)
+                            .addComponent(nuevo_btn)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(guardar_btn))
+                        .addComponent(calorias_text, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(detalle_text, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(tipoComida_textField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+                        .addComponent(tipoComida_text, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(nombre_textField, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(nombre_text, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(calorias_spinner, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         panel3Layout.setVerticalGroup(
@@ -344,7 +338,9 @@ public class VistaComida extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(baja_radio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(guardar_btn)
+                .addGroup(panel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(guardar_btn)
+                    .addComponent(nuevo_btn))
                 .addGap(36, 36, 36))
         );
 
@@ -409,7 +405,7 @@ public class VistaComida extends javax.swing.JInternalFrame {
                 List<Comida> comidas = cd.filtrarPorCalorias(calorias); 
                 llenarTabla(comidas); 
             } catch (NumberFormatException ex) {
-                System.out.println("Por favor, ingrese un número válido.");
+                JOptionPane.showMessageDialog(null, "Ingrese un número válido.");
             }
         });
     }//GEN-LAST:event_filtrarCalorias_radioActionPerformed
@@ -423,39 +419,32 @@ public class VistaComida extends javax.swing.JInternalFrame {
         
         filtroIngredientes_textField.addActionListener(e -> {
             
-         try {
-        // Obtener los ingredientes desde el campo de texto
-        String ingredientesText = filtroIngredientes_textField.getText();
+        try {
         
-        // Verificar que el campo no esté vacío
-        if (ingredientesText.isEmpty()) {
-            System.out.println("Por favor, ingrese al menos un ingrediente.");
-            return; // Si está vacío, salimos sin hacer nada
-        }
+            String ingredientesText = filtroIngredientes_textField.getText();
+        
+       
+            if (ingredientesText.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese al menos un ingrediente.");
+                return; 
+            }
 
-        // Separar los ingredientes por comas y eliminar espacios extra
-        List<String> ingredientes = Arrays.stream(ingredientesText.split(","))
-                                           .map(String::trim)  // Eliminar espacios en blanco antes y después
+       
+            List<String> ingredientes = Arrays.stream(ingredientesText.split(","))
+                                           .map(String::trim)  
                                            .collect(Collectors.toList());
 
-        // Llamar al método 'filtrarPorIngredientes' con la lista de ingredientes
-        List<Comida> comidas = cd.filtrarPorIngredientes(ingredientes);
+            List<Comida> comidas = cd.filtrarPorIngredientes(ingredientes);
 
-        // Llenar la tabla con los resultados
-        llenarTabla(comidas);
+       
+            llenarTabla(comidas);
 
     } catch (Exception ex) {
         System.out.println("Error al filtrar ingredientes: " + ex.getMessage());
+        JOptionPane.showMessageDialog(null, "Error al filtrar ingredientes");
     }
 });
-           // try {
-              //  String ingrediente = filtroIngredientes_textField.getText();
-             //   List<Comida> comidas = cd.filtrarPorIngredientes(ingrediente);
-             //   llenarTabla(comidas);
-           // } catch (NumberFormatException ex) {
-            //    System.out.println("Por favor, ingrese un ingrediente válido.");
-          //  }
-        //});
+          
         
     }//GEN-LAST:event_filtrarIngredientes_radioActionPerformed
 
@@ -468,18 +457,28 @@ public class VistaComida extends javax.swing.JInternalFrame {
                                                   
     try {
         String nombre = nombre_textField.getText();
-        String tipoComidaStr = tipoComida_textField.getText();  // Obtienes el texto de tipoComida
+        String tipoComidaStr = tipoComida_textField.getText();  
         String detalle = detalle_textArea.getText();
 
+        if (!nombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$")) {
+            JOptionPane.showMessageDialog(null, "El nombre solo puede contener letras.");
+            return;
+        }
+        
+        if (!detalle.matches("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s]+$")) {
+            JOptionPane.showMessageDialog(null, "El detalle solo puede contener letras y números.");
+            return;
+        }
+        
         if (nombre.isEmpty() || tipoComidaStr.isEmpty() || detalle.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Asegúrese de completar todos los campos");
             return;
         }
 
-        // Convertir tipoComidaStr a Enum TipoComida
+       
         TipoComida tipoComida = null;
         try {
-            tipoComida = TipoComida.valueOf(tipoComidaStr.toUpperCase()); // Usamos toUpperCase para asegurar que el valor coincida
+            tipoComida = TipoComida.valueOf(tipoComidaStr.toUpperCase());
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(null, "Tipo de comida no válido. Por favor, ingrese un valor correcto.");
             return;
@@ -495,7 +494,7 @@ public class VistaComida extends javax.swing.JInternalFrame {
             resetCampos();
         } else {
             comidaActual.setNombre(nombre);
-            comidaActual.setTipoComida(tipoComida);  // Ahora pasamos el Enum TipoComida
+            comidaActual.setTipoComida(tipoComida); 
             comidaActual.setDetalle(detalle);
             comidaActual.setCaloriasPor100g(calorias);
             comidaActual.setBaja(baja);
@@ -507,61 +506,24 @@ public class VistaComida extends javax.swing.JInternalFrame {
     } catch (Exception e) {
         JOptionPane.showMessageDialog(null, "Error al guardar la comida: " + e.getMessage());
     }
-}
 
-        
-        
-        
-        /* try{
-            String nombre = nombre_textField.getText();
-            String tipoComida = tipoComida_textField.getText();
-            String detalle = detalle_textArea.getText();
-        
-            if (nombre.isEmpty() || tipoComida.isEmpty() || detalle.isEmpty()){
-                JOptionPane.showMessageDialog(null, "Asegúrese de completar todos los campos");
-                return;
-            }
-                
-            int calorias = (int)calorias_spinner.getValue();
-            boolean baja = baja_radio.isSelected();
-            
-
-            if ( comidaActual == null){
-                comidaActual =  new Comida(nombre, tipoComida, detalle, calorias, baja);
-                cd.guardarComida(comidaActual);
-                JOptionPane.showMessageDialog(null, "Comida guardada");
-                resetCampos();
-                
-            } else {
-                comidaActual.setNombre(nombre);
-                comidaActual.setTipoComida(tipoComida);
-                comidaActual.setDetalle(detalle);
-                comidaActual.setCaloriasPor100g(calorias);
-                comidaActual.setBaja(baja);
-
-                cd.actualizarComida(comidaActual);
-                resetCampos();
-                
-            }
-        
-        }catch (Exception e){
-            JOptionPane.showMessageDialog(this, "Verifique los datos ingresados.");
-        }    
 
     }//GEN-LAST:event_guardar_btnActionPerformed
-*/
-    private void borrar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrar_btnActionPerformed
-        // agregar confirmacion   
-        int filaSeleccionada = tablaComidas.getSelectedRow();
-        if(filaSeleccionada!=-1){
-            int codigo = (Integer)tablaComidas.getValueAt(filaSeleccionada, 0);
-            cd.borrarComida(codigo);
-            }
-    }//GEN-LAST:event_borrar_btnActionPerformed
 
-    private void baja_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_baja_radioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_baja_radioActionPerformed
+    private void borrar_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrar_btnActionPerformed
+       
+        int respuesta = JOptionPane.showConfirmDialog(null, "Usted está a punto de borrar una comida ¿Deseas continuar?", "Confirmación", JOptionPane.YES_NO_OPTION);
+        if (respuesta == JOptionPane.YES_OPTION) {
+            int filaSeleccionada = tablaComidas.getSelectedRow();
+            if(filaSeleccionada!=-1){
+                int codigo = (Integer)tablaComidas.getValueAt(filaSeleccionada, 0);
+                cd.borrarComida(codigo);
+                JOptionPane.showMessageDialog(null, "Comida borrada con éxito.");
+            }
+        } 
+        
+       
+    }//GEN-LAST:event_borrar_btnActionPerformed
 
     private void verTodo_radioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verTodo_radioActionPerformed
         llenarTabla(cd.listarComidas());

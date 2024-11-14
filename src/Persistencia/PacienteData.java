@@ -70,9 +70,12 @@ public class PacienteData {
     }
 
     public void borrarPaciente(int nroPaciente) {
-        String sql = "DELETE FROM paciente WHERE nroPaciente = ?";
+       // String sql = "DELETE FROM paciente WHERE nroPaciente = ?";
+       boolean estado = false;
+       String sql = "UPDATE paciente SET estado = ? WHERE nroPaciente = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, nroPaciente);
+            ps.setInt(2, nroPaciente);
+            ps.setBoolean(1, estado);
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error al borrar paciente: " + e.getMessage());
