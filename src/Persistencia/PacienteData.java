@@ -20,13 +20,15 @@ public class PacienteData {
     }
 
     public void guardarPaciente(Paciente paciente) {
-        String sql = "INSERT INTO paciente (nombre, edad, altura, pesoActual, pesoBuscado) VALUES (?, ?, ?, ?, ?)";
+        boolean estado = true;
+        String sql = "INSERT INTO paciente (nombre, edad, altura, pesoActual, pesoBuscado, estado) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, paciente.getNombre());
             ps.setInt(2, paciente.getEdad());
             ps.setFloat(3, paciente.getAltura());
             ps.setFloat(4, paciente.getPesoActual());
             ps.setFloat(5, paciente.getPesoBuscado());
+            ps.setBoolean(6, estado);
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error al guardar paciente: " + e.getMessage());
