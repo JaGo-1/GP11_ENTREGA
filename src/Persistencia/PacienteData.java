@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class PacienteData {
 
@@ -157,47 +158,89 @@ public class PacienteData {
         String sql = "UPDATE paciente SET estado = ? WHERE nroPaciente = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, estado);  // Establecemos el nuevo estado (true = Alta, false = Activo)
-            ps.setInt(2, codigoPaciente); 
+            ps.setInt(1, estado);
+            ps.setInt(2, codigoPaciente);
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error al actualizar el estado del paciente: " + e.getMessage());
         }
     }
 
-public List<Object[]> obtenerPacientesYDietas() {
-    List<Object[]> pacientesYDietas = new ArrayList<>();
-    
-    String sql = "SELECT p.nombre, p.pesoActual, p.pesoBuscado, p.estado AS estadoPaciente, "
-            + "d.nombreD AS nombreDieta, d.pesoFinal "
-            + "FROM paciente p "
-            + "JOIN dieta d ON p.nroPaciente = d.nroPaciente";
+    public List<Object[]> obtenerPacientesYDietas() {
+        List<Object[]> pacientesYDietas = new ArrayList<>();
 
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ResultSet rs = ps.executeQuery();
+        String sql = "SELECT p.nombre, p.pesoActual, p.pesoBuscado, p.estado AS estadoPaciente, "
+                + "d.nombreD AS nombreDieta, d.pesoFinal "
+                + "FROM paciente p "
+                + "JOIN dieta d ON p.nroPaciente = d.nroPaciente";
 
-        while (rs.next()) {
-            // Crear un arreglo para cada paciente y dieta con los campos seleccionados
-            Object[] pacienteYDieta = new Object[6];  // 6 columnas
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
 
-            // Añadimos los datos del paciente
-            pacienteYDieta[0] = rs.getString("nombre");  // Nombre del paciente
-            pacienteYDieta[1] = rs.getFloat("pesoActual");  // Peso actual del paciente
-            pacienteYDieta[2] = rs.getFloat("pesoBuscado");  // Peso buscado del paciente
-            pacienteYDieta[3] = rs.getBoolean("estadoPaciente") ? "Activo" : "Alta";  // Estado del paciente
+            while (rs.next()) {
+                Object[] pacienteYDieta = new Object[6];
 
-            // Añadimos los datos de la dieta
-            pacienteYDieta[4] = rs.getString("nombreDieta");  // Nombre de la dieta
-            pacienteYDieta[5] = rs.getFloat("pesoFinal");  // Peso final alcanzado en la dieta
+                pacienteYDieta[0] = rs.getString("nombre");
+                pacienteYDieta[1] = rs.getFloat("pesoActual"); 
+                pacienteYDieta[2] = rs.getFloat("pesoBuscado"); 
+                pacienteYDieta[3] = rs.getBoolean("estadoPaciente") ? "Activo" : "Alta";
 
-            pacientesYDietas.add(pacienteYDieta);
+                pacienteYDieta[4] = rs.getString("nombreDieta");
+                pacienteYDieta[5] = rs.getFloat("pesoFinal");
+
+                pacientesYDietas.add(pacienteYDieta);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener pacientes y dietas: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("Error al obtener pacientes y dietas: " + e.getMessage());
+
+        return pacientesYDietas;
     }
 
-    return pacientesYDietas;
-}
+    public float obtenerPesoBuscadoDePaciente(int codigoPaciente) {
+        float pesoBuscado = 0.0f;
+        String sql = "SELECT pesoBuscado FROM Paciente WHERE nroPaciente = ?";
 
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
+            ps.setInt(1, codigoPaciente);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    pesoBuscado = rs.getFloat("pesoBuscado");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al obtener el peso buscado: " + e.getMessage());
+        }
+
+        return pesoBuscado;
+    }
+
+    public List<Object[]> listarPacientesNoAlcanzaronPeso() {
+        List<Object[]> pacientes = new ArrayList<>();
+        String sql = "SELECT p.nroPaciente, p.nombre, p.edad, p.altura, p.pesoActual, p.pesoBuscado, d.fechaFin "
+                + "FROM paciente p "
+                + "JOIN dieta d ON p.nroPaciente = d.nroPaciente "
+                + "WHERE p.pesoActual > p.pesoBuscado AND d.fechaFin <= CURRENT_DATE AND d.estado = true";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Object[] paciente = new Object[6];
+                paciente[0] = rs.getString("nombre");
+                paciente[1] = rs.getInt("edad");
+                paciente[2] = rs.getFloat("altura");
+                paciente[3] = rs.getFloat("pesoActual");
+                paciente[4] = rs.getFloat("pesoBuscado");
+                paciente[5] = rs.getDate("fechaFin");
+                pacientes.add(paciente);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al listar pacientes que no alcanzaron su peso objetivo: " + e.getMessage());
+        }
+        return pacientes;
+    }
 }

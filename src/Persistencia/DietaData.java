@@ -110,16 +110,15 @@ public class DietaData {
         }
     }
 
-    public void asignarDietaAPaciente(int codigoDieta, String nombreDieta, LocalDate fechaInicio, LocalDate fechaFin, int codigoPaciente, float pesoInicial, float pesoFinal) {
-        String sql = "UPDATE Dieta SET fechaInicial = ?, fechaFin = ?, nroPaciente = ?, pesoInicial = ?, pesoFinal = ? WHERE codDieta = ?";
+    public void asignarDietaAPaciente(int codigoDieta, String nombreDieta, LocalDate fechaInicio, LocalDate fechaFin, int codigoPaciente, float pesoInicial) {
+        String sql = "UPDATE Dieta SET fechaInicial = ?, fechaFin = ?, nroPaciente = ?, pesoInicial = ? WHERE codDieta = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setDate(1, java.sql.Date.valueOf(fechaInicio)); 
             ps.setDate(2, java.sql.Date.valueOf(fechaFin));
             ps.setInt(3, codigoPaciente);
             ps.setFloat(4, pesoInicial);
-            ps.setFloat(5, pesoFinal); 
-            ps.setInt(6, codigoDieta); 
+            ps.setInt(5, codigoDieta); 
 
             int filasActualizadas = ps.executeUpdate();
             if (filasActualizadas > 0) {
@@ -158,7 +157,6 @@ public class DietaData {
 
         int filasActualizadas = ps.executeUpdate();
         if (filasActualizadas > 0) {
-            JOptionPane.showMessageDialog(null, "La dieta anterior ha sido eliminada.");
         } else {
             JOptionPane.showMessageDialog(null, "No se encontró una dieta asignada para este paciente.");
         }
@@ -213,12 +211,10 @@ public float obtenerPesoInicialDePaciente(int codigoPaciente) {
     try (PreparedStatement psPeso = connection.prepareStatement(sqlActualizarPeso);
          PreparedStatement psEstadoDieta = connection.prepareStatement(sqlActualizarEstadoDieta)) {
 
-        // Actualizar el peso actual del paciente
         psPeso.setFloat(1, paciente.getPesoActual());
         psPeso.setInt(2, paciente.getNroPaciente());
         psPeso.executeUpdate();
 
-        // Actualizar el estado de la dieta en función del nuevo peso
         psEstadoDieta.setBoolean(1, dieta.isEstado());
         psEstadoDieta.setInt(2, dieta.getCodDieta());
         psEstadoDieta.executeUpdate();
@@ -234,12 +230,12 @@ public float obtenerPesoInicialDePaciente(int codigoPaciente) {
         ps.setInt(1, nroPaciente);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
-            return rs.getFloat("pesoFinal");  // Retorna el peso final de la dieta
+            return rs.getFloat("pesoFinal");
         }
     } catch (SQLException e) {
         System.out.println("Error al obtener el peso final de la dieta: " + e.getMessage());
     }
-    return null;  // En caso de que no se encuentre una dieta para ese paciente
+    return null;
 }
 
     
@@ -258,7 +254,6 @@ public float obtenerPesoInicialDePaciente(int codigoPaciente) {
         while (rs.next()) {
             int codDieta = rs.getInt("codDieta");
 
-            // Si cambiamos de dieta, añadimos la dieta anterior a la lista
             if (dietaActual == null || dietaActual.getCodDieta() != codDieta) {
                 dietaActual = new Dieta();
                 dietaActual.setCodDieta(codDieta);
@@ -272,7 +267,6 @@ public float obtenerPesoInicialDePaciente(int codigoPaciente) {
                 dietas.add(dietaActual);
             }
 
-            // Crear el paciente y agregarlo a la dieta actual si existe
             if (rs.getInt("nroPaciente") != 0) { 
                 Paciente paciente = new Paciente();
                 paciente.setNroPaciente(rs.getInt("nroPaciente"));
@@ -282,7 +276,7 @@ public float obtenerPesoInicialDePaciente(int codigoPaciente) {
                 paciente.setPesoActual(rs.getFloat("pesoActual"));
                 paciente.setPesoBuscado(rs.getFloat("pesoBuscado"));
                 paciente.setEstado(rs.getBoolean("estadoPaciente"));
-                dietaActual.getPacientes().add(paciente);  // Añadir el paciente a la dieta actual
+                dietaActual.getPacientes().add(paciente);
             }
         }
 
@@ -294,7 +288,6 @@ public float obtenerPesoInicialDePaciente(int codigoPaciente) {
 }
 
     
-     // Método para cargar la dieta de un paciente desde la base de datos
     public Dieta cargarDietaDesdeBaseDatos(int pacienteId) {
         Dieta dieta = null;
         
@@ -319,4 +312,6 @@ public float obtenerPesoInicialDePaciente(int codigoPaciente) {
         
         return dieta;
     }
+    
+    
 }

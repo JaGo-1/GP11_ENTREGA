@@ -41,15 +41,14 @@ public class Reportes extends javax.swing.JInternalFrame {
         List<Paciente> pacientesDeAltaTotales = dp.listarPacientesAltas();
         objetivosAlcanzados_jLabel.setText("" + pacientesDeAltaTotales.size());
 
-        Timer timer = new Timer(2000, new ActionListener() {  // Cambia cada 2 segundos
-            int index = 0;  // Índice para recorrer la lista de pacientes
+        Timer timer = new Timer(2000, new ActionListener() { 
+            int i = 0; 
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (pacientesTotales.size() > 0) {
-                    Paciente p = pacientesTotales.get(index);
+                    Paciente p = pacientesTotales.get(i);
 
-                    // Recargar dieta desde la base de datos
                     Dieta dieta = dd.cargarDietaDesdeBaseDatos(p.getNroPaciente()); 
 
                     if (dieta != null) {
@@ -57,7 +56,6 @@ public class Reportes extends javax.swing.JInternalFrame {
                         long diasTranscurridos = dieta.getDiasTranscurridos();
                         double porcentajeProgreso = dieta.getPorcentajeProgreso();
 
-                        // Actualizar la barra de progreso
                         peso_jProgressBar.setMinimum(0);
                         peso_jProgressBar.setMaximum((int) totalDias);
                         peso_jProgressBar.setValue((int) diasTranscurridos);
@@ -72,9 +70,9 @@ public class Reportes extends javax.swing.JInternalFrame {
 
                     nombrePaciente_jLabel.setText(p.getNombre());
 
-                    index++;
-                    if (index >= pacientesTotales.size()) {
-                        index = 0;
+                    i++;
+                    if (i >= pacientesTotales.size()) {
+                        i = 0;
                     }
                 }
             }
